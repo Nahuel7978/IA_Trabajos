@@ -1,0 +1,986 @@
+version: "3.1"
+
+nlu:
+- lookup: nombre
+  examples: |
+    - Sophia
+    - Emma
+    - Isabella
+    - olivia
+    - ava
+    - emily
+    - Abigail
+    - mia
+    - Madison
+    - Elizabeth
+    - sofia
+    - Giulia
+    - martina
+    - Giorgia
+    - sara
+    - emma
+    - Aurora
+    - Chiara
+    - Alice
+    - Alessia
+    - Charlotte
+    - Ruby
+    - Lilly
+    - Olivia
+    - Chloe
+    - Sophie
+    - Emily
+    - Mia
+    - Amelia
+    - Ava
+    - Sofia
+    - Florencia
+    - Valentina
+    - Isidora
+    - Antonella
+    - Antonia
+    - Emilia
+    - Catalina
+    - Fernanda
+    - Lucía
+    - María
+    - Paula
+    - Daniela
+    - Sara
+    - Carla
+    - Martina
+    - Sofía
+    - Julia
+    - Alba
+    - Miguel Ángel
+    - Juan Carlos
+    - Carlos Alberto
+    - José Luis
+    - Juan Manuel
+    - Jackson
+    - Aiden
+    - Liam
+    - Lucas
+    - Noah
+    - Benjamín
+    - Vicente
+    - Martín
+    - Matías
+    - Joaquín
+    - Luis
+    - Alberto
+    - Edgar
+    - Martin
+    - Alejandro
+    - alejandro
+    - Diego
+    - Gabriel
+    - Samuel
+    - santiago
+    - Matias
+    - Sebastián
+    - Mateo
+    - Nicolás
+    - Harry
+    - Jack
+    - Oliver
+    - Charlie
+    - James
+    - lucas
+    - Enzo
+    - Nathan
+    - Mathis
+    - Louis
+    - Maximilian
+    - Alexander
+    - Paul
+    - Leon
+    - Lukas
+    - Davi
+    - Miguel
+    - Arthur
+    - Matheus
+    - Nahuel
+    - nahuel
+    - Eliseo
+    - eliseo
+    - Sabino
+    - sabino
+    - Belen
+    - belen
+    - Valentina
+    - valentina
+    - Florencia
+    - florencia
+    - Hernan
+    - hernan
+    - Guillermo
+    - guillermo
+    - Marcelo
+    - marcelo
+    - Oscar
+    - oscar
+    - Federico
+    - federico
+    - Analia
+    - analia
+    - Santiago
+    - Elias
+    - Camila
+    - camila
+    - Ludmila
+    - ludmila
+    - Juan Cruz
+    - Ernesto
+    - Adrian
+    - Sabi
+    - Valen
+    - Val
+    - Nahu
+    - Nahue
+    - Santi
+    - Eli
+    - Fede
+    - Belu
+    - Bel
+    - Kate
+    - Cate
+    - Adri
+
+- regex: titulo
+  examples: |
+    - \w{3-10}|\w{3-10}\s\w{3-10}|\w{3-10}\s\w{1-10}\s\w{3-10}
+
+- lookup: dia
+  examples: |
+    - Lunes
+    - lunes
+    - LUNES
+    - Martes
+    - martes
+    - MARTES
+    - Miercoles
+    - miercoles
+    - MIERCOLES
+    - Jueves
+    - jueves
+    - JUEVES
+    - Viernes
+    - viernes
+    - VIERNES
+    - Sabado
+    - sabado
+    - SABADO
+    - Domingo
+    - domingo
+    - DOMINGO
+
+- regex: hora
+  examples: |
+    - [01]?[0-9]|2[0-4]|^([01]?[0-9]):[0-5][0-9]$|^(2[0-3]):[0-5][0-9]$
+
+- intent: saludo
+  examples: |
+    - hey
+    - hello
+    - hi
+    - Hola
+    - holiss
+    - Holis
+    - holi
+    - holu
+    - Holus
+    - hola
+    - holaa
+    - Holaa
+    - buenas
+    - Buenas
+    - buenass
+    - Buen día
+    - buen dia
+    - Buenos días
+    - buenos dias
+    - Buenas tardes
+    - buenas tardes
+    - Buenas noches
+    - buenas noches
+    - Hola disculpa la hora
+
+- intent: despedida
+  examples: |
+    - good by
+    - good night
+    - bye
+    - goodbye
+    - Adios
+    - Nos vemos
+    - chau
+    - Chau
+    - nos vemos
+    - bueno nos vemos
+    - hasta pronto
+    - Hasta pronto
+    - Hasta luego
+    - hasta luego
+    - me voy
+    - nos vemos pronto
+    - nos estamos viendo
+    - me retiro
+    - chau chau
+
+- intent: afirmacion
+  examples: |
+    - yes
+    - y
+    - s
+    - correct
+    - si
+    - Si
+    - si 
+    - Por supuesto
+    - por supuesto
+    - Claro
+    - claro
+    - CLARO
+    - Dale
+    - dale
+    - dale dale
+    - dalee
+    - claro que si
+    - lo necesito
+    - lo quiero
+    - me sirve
+    - messirve
+    - afirmativo
+    - confirmo
+    - Confirmo
+    - Confirmado
+    - confirmado
+    - Acepto
+    - Sisi
+    - sisi
+    - SISI
+    - siii
+    - Sii
+    - perfecto
+    - Perfecto
+
+- intent: negacion
+  examples: |
+    - no
+    - n
+    - N
+    - never
+    - Never
+    - No
+    - NO
+    - Jamas
+    - jamas
+    - Nunca
+    - nunca
+    - NUNCA
+    - nono
+    - Nono
+    - no lo necesito
+    - No lo necesito
+    - no lo quiero
+    - No lo quiero
+    - no
+    - No
+    - no necesito
+    - No necesito
+    - Por supuesto que no
+    - por supuesto que no
+    - por supuesto que NO
+    - Por supuesto que NO
+    - Ni ahi
+    - Ni ahí
+    - ni ahi
+    - neel
+    - nell
+    - nou
+    - no, no puedo
+    - no, se me re complica
+    - se me complica
+    - no, se me complica
+    - no creo poder
+    - no estoy seguro
+    - justo ahi no puedo
+    - no puedo
+    - no puedo ese dia
+    - no puedo en ese horario
+    - no me conviene
+    - mejor no
+    - no, otro horario
+    - no, otro dia
+    - otro dia mejor
+    - otro dia
+    - paso 
+    - mejor no
+    - mejor en otra hora
+
+- intent: satisfactorio
+  examples: |
+    - Gracias
+    - Muchas Gracias
+    - muchas gracias
+    - gracias
+    - Genial
+    - genial
+    - Exelente
+    - exelente
+    - perfecto
+    - Perfecto
+    - Excelso
+    - me encanto 
+    - me gusta la idea
+    - Buenisimo
+    - buenisimo
+    - Buenisimoo
+    - buenisimoo
+    - gracias
+    - Gracias
+    - graciass
+    - piola
+    - ah piola
+    - piola piola
+    - joya
+    - Joya
+    - joyaaa
+
+- intent: insatisfactorio
+  examples: |
+    - bad
+    - horrible
+    - Horrible
+    - No me agrado
+    - No me gusto
+    - Feo
+    - feo
+    - No me sirvio
+    - no me sirve
+    - No me sirve
+    - para nada
+
+- intent: bien
+  examples: |
+    - Bien
+    - BIEN
+    - bien
+    - bien bien
+    - muy bien
+    - Muy bien
+    - Muy Bien
+    - MUY BIEN
+    - re bien
+    - Re bien
+    - super bien
+    - Increible
+    - increible
+    - me siento bien
+    - estoy bien
+    - estoy perfecto
+    - la verdad que bien
+    - la verdad que re bien
+    - perfect
+    - great
+    - so good
+    
+- intent: cortante
+  examples: |
+    - deja
+    - ya esta olvidate
+    - mejor deja
+    - cambiemos de tema
+    - otra cosa
+    - no importa
+    - no importa deja
+    - ya esta
+    - ya fue
+    - en otro momento
+    - basta, ya fue
+    - basta, no importa
+    - basta en otro momento
+    - bueno, ya esta
+    - bueno, ya fue
+    - cortala aca
+    - mejor lo dejamos aca
+    - fue
+    - basta
+    - murio cabida
+    - murio cabida amigo
+    - fue, no te preocupes
+    - a ver si cambiamos de tema
+    - en otro momento
+    - hablemos de otra cosa
+    - hablemos de otra cosa mejor
+    - mejor hablemos de otra cosa
+
+- intent: enojo
+  examples: |
+    - Estoy enojado
+    - Estoy molesto
+    - me enoja que
+    - me molesta demasiado 
+    - me molesta que
+    - bue
+    - ayyy
+    - DIOOS
+    - que calentura
+    - Que calentura.
+    - dejate de joder
+    - Dejate de joder
+    - me estas cargando?
+    - me estas tomando el pelo?
+    - sos joda?
+    - me estas boludeando
+    - que boludo que sos
+    - sos tonto
+    - anda a cagar
+    - que queres que te diga?
+    - deja de joder
+    - no me molestes mas
+    - no me rompas las bola
+    - no me rompas las pelotas
+    - andas re mal
+    - funcionas re mal
+    - no servis para nada
+    - andas horrible
+    - sos asquerosos
+    - por que no te vas a cagar
+    - por que no te vas a cagar?
+    - por qué no te vas a cagar?
+    - porque no te vas a cagar
+    - que ganas de matarte
+    - que ganas de desenchufarte
+    - andate a la mierda
+    - Andate a la mierda
+
+- intent: triste
+  examples: |
+    - I am sad
+    - super sad
+    - sad
+    - not good
+    - so sad
+    - mal
+    - mall
+    - MAL
+    - Mal
+    - Muy mal
+    - muy mal
+    - demasiado mal
+    - Estoy mal
+    - estoy mal
+    - No muy bien
+    - para nada bien
+    - no me siento bien
+    - No me siento bien
+    - No muy bien
+    - no muy bien
+    - no estoy bien
+    - No estoy bien
+    - No estoy muy bien
+    - bastante mal
+    - Bastante mal
+    - Demasiado mal
+    - Triste
+    - triste
+    - muy triste
+    - demasiado triste
+    - un poco triste
+
+- intent: preguntas_casete
+  examples: |
+    - are you a bot?
+    - are you a human?
+    - sos un robot?
+    - Sos un robot?
+    - sos un bot?
+    - Sos un humano?
+    - sos humano?
+    - Quién es tu creador?
+    - quien es tu creador?
+    - quién te creo
+    - como te llamas?
+    - Cómo te llamas?
+    - Para que te crearon?
+    - para qué te crearon?
+    - Cual es tu función?
+    - cual es tu funcion?
+    - qué podes hacer?
+    - Qué podes hacer?
+    - Cuál es tu proposito?
+    - por qué te crearon?
+    - Cuántos años tenes?
+    - cuantos años tenes?
+    - contame sobre vos
+    - Cuentame sobre tí
+
+- intent: contactos
+  examples: |
+    - Necesito los telefonos del campus
+    - quiero los contactos de la facultas
+    - numeros de telefono
+    - no se el numero de la facultad
+    - necesito hablar con secretaria de alumnos
+    - me quiero contactar con el centro de estudiantes
+    - telefono de
+    - Quiero hablar con secretaria Academica
+    - quiero contactar a secretaría de extension
+    - contactos de la facultad
+    - telefono de Coordinación Academica
+    - tengo que hablar con oficina de alumnos
+    - oficina de alumnos
+    - me quiero comunicar con sistema guaraní
+    - telefonos de la facultad
+    - contactos de exactas
+    - centro de estudiantes
+
+- intent: reunion
+  examples: |
+    - Nos juntamos?
+    - Nos juntamos a hacer el trabajo?
+    - vamos a hacer el trabajo?
+    - queres juntarte a trabajar?
+    - podemos tener una reunion?
+    - queres que hagamos una reunion
+    - y si nos juntamos a hacer el trabajo de
+    - cuando podrias juntarte?
+    - Cuándo podrías juntarte?
+    - ¿Cuando podriamos juntarnos?
+    - Estas disponible para una reunion?
+    - pinta juntarse?
+    - Necesito reunirme con vos
+    - Quiero reunirme con vos
+    - tendriamos que juntarnos
+    - deberiamos organizar una reunion
+    - deberiamos organizar un dia para juntarnos
+    - deberiamos ver un dia para juntarnos
+    - deberiamos organizar un dia para reunirnos
+    - deberiamos organizar un dia para terminar el trabajo
+    - deberiamos organizar un dia para terminar el tp
+    - deberiamos organizar un dia para estudiar
+    - vamos a juntarnos?
+    - queres juntarte a hacer el TP
+    - te pinta juntarte a hacer el trabajo?
+    - cuando nos juntamos a 
+    - vamos a juntarnos a
+    - queres juntarte a
+    - hacemos una videollamada
+    - hacemos una reunion
+    - che, nos juntamos a hacer el trabajo
+
+- intent: soy_profesor
+  examples: |
+    - soy profesor
+    - Soy profesor
+    - Soy profesora
+    - soy profesora
+    - soy un profesor
+    - Soy una profesora
+    - Profesor
+    - profesor
+    - Profesora
+    - profesora
+    - soy ayudante
+    - Soy ayudante
+    - Ayudante
+    - ayudante
+    - tu profesor
+    - tu profesora
+    - profesora de 
+    - profesor de
+    - Profesora de programacion exploratoria
+    - Profesor de analisis y diseño de algoritmos
+    - Soy el profesor de cs.computación
+    - Soy la profesora de Analisis matematico
+    - Prof
+    - yo soy profesor
+    - yo soy profesora
+    - Yo soy tu profesor
+    - Yo soy tu profesora
+    - soy el profesor de Nahuel
+    - Soy la profesora de Nahuel
+    - mi nombre es [Nahuel](nombre) soy profesor
+    - mi nombre es [Maria](nombre) soy Profesor
+    - mi nombre es [Matias](nombre) soy ayudante
+    - mi nombre es [nelson](nombre) soy Ayudante
+    - soy [Santiago](nombre) soy el Ayudante de programacion exploratioria
+    - soy [Analia](nombre), la Profesora de programacion
+    - el profesor de, me llamo [sofia](nombre)
+    - mi nombre es [Adrian](nombre) soy profesor
+
+- intent: soy_alumno
+  examples: |
+    - Soy alumno
+    - soy alumna
+    - Soy un alumno
+    - soy una alumna
+    - Alumno
+    - alumno
+    - Alumna
+    - alumno
+    - compañera 
+    - compañero 
+    - Compañera
+    - Compañero
+    - soy tu compañera
+    - soy tu compañero
+    - curso con vos
+    - yo curso con vos
+    - curso con Nahuel
+    - Estamos juntos en
+    - estamos juntos en programacion exploratoria
+    - Cursamos Ayda
+    - Curso con Nahuel cs.computacion
+    - Estoy con vos 
+    - Estoy con vos en una clase
+    - Estoy cursando con vos
+    - estoy cursando con Nahuel
+    - soy tu compañero en analisis matematico
+    - soy [Eli](nombre), cursamos juntos
+    - Yo soy [Nahuel](nombre) estamos en lineal
+    - yo soy [Sabino](nombre) tu compañero de grupo
+    - me llamo [Valentina](nombre) curso con vos
+    - [Analia](nombre) tu compañera
+    - mi nombre es [Juan Carlos](nombre) soy tu compañero
+
+- intent: horario
+  examples: |
+    - Te parece el [lunes](dia) a las [14:00](hora)?
+    - te parece el [Martes](dia) por la tarde?
+    - Qué te parece a las [19](hora)hs el [JUEVES](dia)?
+    - A las [15](hora) del (domingo)[dia] te parece bien?
+    - El [miercoles](dia) [12:35](hora) te va?
+    - [17](hora)hs el [Lunes](dia) podes?
+    - podes el [martes](dia) a las [14](hora)hs?
+    - [sabado](dia) [23](hora)hs esta bien?
+    - capaz el [Domingo](dia) a las [20:30](hora)hs
+    - [Viernes](dia) [17](hora)hs.
+    - el [jueves](dia) estas libre?
+    - el [MIERCOLES](dia) podes?
+    - arreglamos para el [Jueves](dia)?
+    - quedamos para el [viernes](dia)
+    - ¿Podes el [Jueves](dia)?
+    - estas libre el [Sabado](dia)?
+    - yo puedo [sabado](dia)
+    - te parece [11:30](hora)?
+    - Te parece [14:00](hora)?
+    - Qué te parece [18](hora)hs?
+    - que te parece [18](hora)hs?
+    - A las [15](hora) te parece bien?
+    - a las [20](hora)?
+    - a las [12:30](hora)
+    - [17](hora)hs podes
+    - [22](hora)hs podes?
+    - arreglamos para las [10](hora)?
+    - quedamos a las [9](hora)
+    - te parece a las [13:15](hora)
+    - te pinta [16](hora)?
+    - [23](hora) esta bien?
+    - [22](hora)hs? 
+    - tengo libre a las [15:30](hora)
+    - me queda bien [17:20](hora)
+    - te queda bien [24](hora)?
+    - estas libre a las [8](hora)?
+    - ¿Podes a las [11](hora)hs?
+    - arreglamos a las [10:25](hora)?
+    - arreglamos a las [10:00](hora)
+    - yo puedo [24](hora)hs
+    - uff, que te parece el [Jueves](dia) [15:50](hora)hs?
+    - che te va el [miercoles](dia)?
+    - te va el [Sabado](dia) [14](hora)?
+    - pinta el [domingo](dia)?
+    - pinta el [domingo](dia) [12](hora)hs?
+    - que te parece el [viernes](dia) a las [00:12](hora)hs?
+    - te va el [domingo](dia) a las [00:30](hora)hs
+
+- intent: materias_cursadas
+  examples: |
+    - Qué materias estas cursando?
+    - que materias estas cursando?
+    - cuales son las materias que cursas?
+    - y ahora que estas cursando?
+    - y ahora que estas cursando
+    - que estas cursando?
+    - Cuales estas haciendo
+    - este cuatri cuales cursas?
+    - cuales estas cursando?
+    - que materias estas haciendo
+    - el cuales te anotaste?
+    - Que materias estas haciendo ahora?
+    - Todas las materias estas haciendo?
+    - todas las materias estas cursando?
+    - una pregunta, que materias estas cursando?
+    - una pregunta, que materias estas haciendo?
+    - che una pregunta, que materias estas cursando?
+
+- intent: consejo
+  examples: |
+    - Necesito un consejo
+    - necesito un consejo
+    - que consejo me darias 
+    - me darias un consejo
+    - que me dirias
+    - algun consejo
+    - Algun Consejo
+    - Algo para decirme
+    - algo para aconsejarme
+    - como me aconsejarias
+    - de que manera me aconsejarias
+    - aconsejame
+    - algun consejo sobre la facultad
+    - algun consejo sobre la clase
+    - Consejo
+    - Aconsejame
+    - Aconsejar
+    - algun consejo
+    - Algun consejo
+  
+- intent: ayuda
+  examples: |
+    - Necesito Ayuda
+    - Ayuda
+    - quiero ayuda
+    - ayuda
+    - necesito ayuda
+    - estoy buscando ayuda
+    - buscando Ayuda
+    - necesito una mano
+    - una mano
+    - me das una mano?
+    - me haces la dos
+    - me ayudarias con
+    - me ayudas con
+    - che, me das una mano?
+    - che, me ayudas con algo
+    - me ayudarias con algo?
+    - estaria necesitando ayuda
+    - me ayudas?
+    - Ayudaa
+    - auxilio
+    - te necesito
+
+- intent: buscar_informacion
+  examples: |
+    - no encuentro información sobre [Algoritmo de Kruscal](titulo)
+    - No encuentro informacion de [combinatoria](titulo)
+    - quisiera saber sobre la [sumatoria](titulo)
+    - busco informacion sobre [Redes](titulo)
+    - Estoy buscando información sobre [tecnicas Cuantitativas](titulo)
+    - no entiendo el [machine Learning](titulo)
+    - podrias buscar informacion sobre [perros](titulo)
+    - Me ayudarias a buscar el [algoritmo de Prim]
+    - estaria buscando datos sobre [probabilidad y estadistica](titulo)
+    - encontrar algo sobre [electricidad y magnetismo](titulo)
+    - datos sobre la  [moda](titulo)
+    - informacion sobre [Programacion](titulo)
+    - que es la [inteligencia artificial](titulo)
+    - como funcionan los [AUTOS](titulo)
+    - de que manera esta escrita la [constitucion argentina](titulo)?
+    - como se escribe una [constitución](titulo)?
+    - no se que son los [condicionales](titulo)
+    - me cuesta entender el [algoritmo de backtracking](titulo)
+    - quiero informacion de las [celulas procariotas](titulo)
+    - busco informacion de los [Cuerpos Celestes](titulo)
+    - cuando se fue la [segunda Guerra Mundial](titulo)?
+    - de que manera se fundo el [futbol](titulo)?
+    - que se sabe sobre el [dolar](titulo)?
+    - que se sabe sobre el [dolar blue](titulo)?
+    - cuando se independizo [argentina](titulo)?
+    - Estoy buscando el [framework rasa](titulo)
+    - que es una [deep learning](titulo)?
+    - quiero saber sobre la [magia](titulo)
+    - la definicion de [Algoritmo](titulo)
+    - definicion de [extrovertido](titulo)
+    - Definicion de [anticonstitucional](titulo)
+    - cual es la definición de [analgesico](titulo)?
+    - quien fue [Albert Einstein](titulo)
+    - como murio [San Martin](titulo)
+    - Quien fue [San Sebastian]?
+    - como se llamaba el que invento el [iphone](titulo)?
+    - de que manera murio [Cristobal Colon](titulo)?
+    - busco cosas de [informatica](titulo)
+    - buscando algo sobre el [sonido](titulo)
+    - algo de [prolog](titulo) sabes?
+    - alguna cosa de [divide y conquista](titulo) conoces?
+    
+- intent: como_estas
+  examples: |
+    - como estas?
+    - Como estas?
+    - Cómo estas?
+    - como estas
+    - como andas?
+    - Como andas?
+    - Cómo andas? 
+    - como andas
+    - como va?
+    - Como va?
+    - Cómo va?
+    - como va
+    - todo bien?
+    - Todo bien?
+    - todo bien
+    - hola como estas?
+    - Hola como estas?
+    - Hola, como estas?
+    - hola, como estas?
+    - que onda
+    - que tal
+    - que tal?
+    - qué tal?
+    - Que tal?
+    - qué onda pa?
+    - que onda pa?
+    - Que onda pa?
+    - que onda pa
+
+- intent: choque
+  examples: |
+    - choque
+    - choque el auto
+    - choque la bici
+    - choque la moto
+    - me chocaron el auto
+    - me chocaron la bici
+    - me chocaron la moto
+    - me rompieron el auto
+    - me rompieron la bici
+    - me rompieron la moto
+    - se me rompio el auto
+    - se me rompio la bici
+    - se me rompio la moto
+    - me destruyeron el auto
+    - me destruyeron la bice
+    - me destruyeron la moto
+    - hice mierda el auto
+    - hice mierda la bici
+    - hice mierda la moto
+    - volque con el auto
+    - me cai de la bici
+    - me cai de la moto
+    - pasa que choque el auto
+    - pasa que choque con la bici
+    - pasa que choque con la moto
+    - choque en la ruta
+    - choque en la avenida
+    - choque en la ciudad
+    - tuve un accidente
+    - me chocaron en la ruta
+
+- intent: murio
+  examples: |
+    - perdi a un familiar
+    - perdi a un ser querido
+    - perdi a un amigo
+    - murio un familiar
+    - murio un ser querido
+    - se murio un amigo
+    - se murio un familiar
+    - se murio un ser querido
+    - se murio un amigo
+    - fallecio un familiar
+    - fallecio un ser querido
+    - fallecio un amigo
+    - se murio mi papa
+    - se murio mi mama
+    - se murio mi hermano
+    - se murio mi hermana
+    - se murio mi primo
+    - se murio mi prima
+    - se murio mi tio
+    - se murio mi tia
+    - se murio mi abuelo
+    - se murio mi abuela
+    - se murio mi padrino
+    - se murio mi madrina
+    - se murio un amigo
+    - se murio mi amigo
+    - se murio mi perro
+    - se murio mi perra
+    - se murio mi mascota
+    - se murio mi
+    - fallecio mi papa
+    - fallecio mi mama
+    - fallecio mi hermano
+    - fallecio mi hermana
+    - fallecio mi primo
+    - fallecio mi prima
+    - fallecio mi tio
+    - fallecio mi tia
+    - fallecio mi abuelo
+    - fallecio mi abuela
+    - fallecio mi padrino
+    - fallecio mi madrina
+    - fallecio un amigo
+    - fallecio mi amigo
+    - fallecio mi perro
+    - fallecio mi perra
+    - fallecio mi mascota
+    - fallecio mi
+    - se murieron mis padres
+    - se murieron mis papas
+    - se murieron mis hermanos
+    - se murieron mis hermanas
+    - se murieron unos tios
+    - se murieron mis tios
+    - se murieron mis abuelos
+    - se murieron mis perros
+    - se murieron mis mascotas
+    - se murieron unos amigos
+
+- intent: fallo
+  examples: |
+    - desaprobe un examen
+    - desaprobe una prueba
+    - desaprobe el parcial
+    - desaprobe el final
+    - desaprobe un examen de matematicas
+    - desaprobe un examen de manejo
+    - desaprobe un parcial
+    - desaprobe el final de Ayda
+    - me fue mal en un examen
+    - me fue mal en el examen de proba
+    - me fue mal en la prueba de manejo
+    - me fue mal en el parcial de anatomia
+    - me fue mal en el final
+    - me fue como el culo en el examen
+    - me fue como el culo en la prueba
+    - me fue como el culo en el parcial
+    - me fue como el culo en el final
+    - no pude aprobar el examen
+    - no pude aprobar la prueba
+    - no puede aprobar el parcial
+    - no pude aprobar el final
+    - perdi 
+    - perdimos 
+    - me fue mal
+    - nos fue mal
+    - falle
+    - fallamos
+    - erre
+    - erramos
+    - perdí el partido
+    - perdi la partida
+    - perdimos el partido
+    - perdimos la partida
+    - perdimos el campeonato
+    - perdimos el torneo
+    - nos fue mal en el partido
+    - nos fue mal en el torneo
+    - falle un tiro
+    - falle un gol
+    - falle en una jugada
+    - erre un tiro
+    - erre un gol
+    - me equivoque
+    - nos equivocamos
+    - me equivoque en el examen
+    - me equivoque en la prueba
+    - me equivoque en el parcial
+    - me equivoque en el final
+    - me equivoque de camino
+    - me equivoque de ruta
+    - me equivoque en una jugada

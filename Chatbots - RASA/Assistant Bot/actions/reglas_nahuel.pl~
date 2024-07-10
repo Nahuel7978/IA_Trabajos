@@ -1,0 +1,36 @@
+%Hechos
+horario_ocupado_alumno('lunes',[[0,13],[15,17],[18,24]]).
+horario_ocupado_alumno('martes',[[0,10],[12,17],[20,24]]).
+horario_ocupado_alumno('miercoles',[[0,13],[14,16],[20,24]]).
+horario_ocupado_alumno('jueves',[[0,19],[20,24]]).
+horario_ocupado_alumno('viernes',[[0,16],[20,24]]).
+horario_ocupado_alumno('sabado',[[0,9],[12,14],[19,24]]).
+horario_ocupado_alumno('domingo',[[0,14],[19,24]]).
+
+horario_ocupado_profesor('lunes',[[0,12],[18,24]]).
+horario_ocupado_profesor('martes',[[0,8],[12,17],[20,24]]).
+horario_ocupado_profesor('miercoles',[[0,13],[20,24]]).
+horario_ocupado_profesor('jueves',[[0,19],[20,24]]).
+horario_ocupado_profesor('viernes',[[0,16],[20,24]]).
+horario_ocupado_profesor('sabado',[[0,8],[20,24]]).
+horario_ocupado_profesor('domingo',[[0,11],[20,24]]).
+
+
+materia_cursada('programacion exploratoria','BIEN','GUSTA',['Adrian ','Valentin.R','Luca.P','Nahuel.V','Nicolas']).
+materia_cursada('analisis y diseno de algoritmos 2','BIEN','GUSTA',['Eliseo.V']).
+materia_cursada('comunicacion de datos 1','BIEN','NO GUSTA',['Eliseo.V','Tomas.R']).
+materia_cursada('probabilidad y estadistica','BIEN','GUSTA',[]).
+
+gustos('estudio',['redactar informes','la planificacion del trabajo','y la programacion']).
+gustos('grupales',['el respeto','la planificacion','y la organizacion']).
+gustos('deportes',['voley','correr','y el futbol']).
+gustos('personales',['el debate','la politica','el emprendimiento','y la int.artificial']).
+
+
+%Reglas
+
+companeros_grupo(M,C):-materia_cursada(M,_,_,C).
+
+
+%agregar_horario(D):-horario_ocupado_alumno(D,C),C=[[13,15]|C].
+

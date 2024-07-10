@@ -1,0 +1,57 @@
+%Hechos
+%
+:- dynamic(reunion/2).
+
+reunion('lunes',[[0,0]]).
+reunion('martes',[[0,0]]).
+reunion('miercoles',[[0,0]]).
+reunion('jueves',[[0,0]]).
+reunion('viernes',[[0,0]]).
+reunion('sabad',[[0,0]]).
+reunion('domingo',[[0,0]]).
+
+
+horario_ocupado_alumno('lunes',[[0,13],[15,17],[18,24]]).
+horario_ocupado_alumno('martes',[[0,10],[12,17],[20,24]]).
+horario_ocupado_alumno('miercoles',[[0,13],[14,16],[20,24]]).
+horario_ocupado_alumno('jueves',[[0,19],[20,24]]).
+horario_ocupado_alumno('viernes',[[0,16],[20,24]]).
+horario_ocupado_alumno('sabado',[[0,9],[12,14],[19,24]]).
+horario_ocupado_alumno('domingo',[[0,14],[19,24]]).
+
+horario_ocupado_profesor('lunes',[[0,12],[18,24]]).
+horario_ocupado_profesor('martes',[[0,8],[12,17],[20,24]]).
+horario_ocupado_profesor('miercoles',[[0,13],[20,24]]).
+horario_ocupado_profesor('jueves',[[0,19],[20,24]]).
+horario_ocupado_profesor('viernes',[[0,16],[20,24]]).
+horario_ocupado_profesor('sabado',[[0,8],[20,24]]).
+horario_ocupado_profesor('domingo',[[0,11],[20,24]]).
+
+materia_cursada('PROGRAMACION EXPLORATORIA','BIEN','GUSTA',['Adrian ','Valentin.R','Luca.P','Nahuel.V','Nicolas']).
+materia_cursada('ANALISIS Y DISEÑO DE ALGORITMOS 2','BIEN','GUSTA',['Eliseo.V']).
+materia_cursada('COMUNICACION DE DATOS 1','BIEN','NO GUSTA',['Eliseo.V','Tomas.R']).
+materia_cursada('PROBABILIDAD Y ESTADISTICA','BIEN','GUSTA',[]).
+
+gustos('ESTUDIO',['redactar informes','la planificacion del trabajo','y la programacion']).
+gustos('GRUPALES',['el respeto','la planificacion','y la organizacion']).
+gustos('DEPORTES',['voley','correr','y el futbol']).
+gustos('PERSONALES',['el debate','la politica','el emprendimiento','y la int.artificial']).
+
+%Reglas
+
+ocupado_para_alumno(D,H):-horario_ocupado_alumno(D,H).
+ocupado_para_profesor(D,H):-horario_ocupado_profesor(D,H).
+
+materia(M,T,G,C):-materia_cursada(M,T,G,C).
+companeros_grupo(M,C):-materia_cursada(M,_,_,C).
+
+gustos_especifico(T,C):-gustos(T,C).
+
+crear_lista_horarios([],N,[N]).
+crear_lista_horarios([H|C],N,[H|T]):-crear_lista_horarios(C,N,T).
+
+crear_reunion(D,I,F):-L=[],crear_lista_horarios(L,I,LN),crear_lista_horarios(LN,F,LM),crear_lista_horarios(L,LM,LF), asserta(reunion(D,LF)).
+
+crear_reunion2(D,I,F):-reunion(D,LF),L=[],crear_lista_horarios(L,I,LN),crear_lista_horarios(LN,F,LM),crear_lista_horarios(L,LM,LF), asserta(reunion(D,LF)).
+
+buscar_reunion(D,L):-reunion(D,L).

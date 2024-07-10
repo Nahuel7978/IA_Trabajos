@@ -1,0 +1,6 @@
+[
+  {
+    "name": "dia",
+    "pattern": "(\\bLunes\\b|\\blunes\\b|\\bLUNES\\b|\\bMartes\\b|\\bmartes\\b|\\bMARTES\\b|\\bMiercoles\\b|\\bmiercoles\\b|\\bMIERCOLES\\b|\\bJueves\\b|\\bjueves\\b|\\bJUEVES\\b|\\bViernes\\b|\\bviernes\\b|\\bVIERNES\\b|\\bSabado\\b|\\bsabado\\b|\\bSABADO\\b|\\bDomingo\\b|\\bdomingo\\b|\\bDOMINGO\\b)"
+  }
+]

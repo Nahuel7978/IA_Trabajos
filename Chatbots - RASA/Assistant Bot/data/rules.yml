@@ -1,0 +1,12 @@
+version: "3.1"
+
+rules:
+
+- rule: Adios
+  steps:
+  - intent: despedida
+  - action: utter_goodbye
+
+
+
+

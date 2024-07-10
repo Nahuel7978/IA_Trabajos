@@ -1,0 +1,18 @@
+[
+  {
+    "name": "hora",
+    "pattern": "[01]?[0-9]|2[0-4]|^([01]?[0-9]):[0-5][0-9]$|^(2[0-3]):[0-5][0-9]$"
+  },
+  {
+    "name": "titulo",
+    "pattern": "\\w{3-10}|\\w{3-10}\\s\\w{3-10}|\\w{3-10}\\s\\w{1-10}\\s\\w{3-10}"
+  },
+  {
+    "name": "nombre",
+    "pattern": "(\\bSophia\\b|\\bEmma\\b|\\bIsabella\\b|\\bolivia\\b|\\bava\\b|\\bemily\\b|\\bAbigail\\b|\\bmia\\b|\\bMadison\\b|\\bElizabeth\\b|\\bsofia\\b|\\bGiulia\\b|\\bmartina\\b|\\bGiorgia\\b|\\bsara\\b|\\bemma\\b|\\bAurora\\b|\\bChiara\\b|\\bAlice\\b|\\bAlessia\\b|\\bCharlotte\\b|\\bRuby\\b|\\bLilly\\b|\\bOlivia\\b|\\bChloe\\b|\\bSophie\\b|\\bEmily\\b|\\bMia\\b|\\bAmelia\\b|\\bAva\\b|\\bSofia\\b|\\bFlorencia\\b|\\bValentina\\b|\\bIsidora\\b|\\bAntonella\\b|\\bAntonia\\b|\\bEmilia\\b|\\bCatalina\\b|\\bFernanda\\b|\\bLucía\\b|\\bMaría\\b|\\bPaula\\b|\\bDaniela\\b|\\bSara\\b|\\bCarla\\b|\\bMartina\\b|\\bSofía\\b|\\bJulia\\b|\\bAlba\\b|\\bMiguel\\ Ángel\\b|\\bJuan\\ Carlos\\b|\\bCarlos\\ Alberto\\b|\\bJosé\\ Luis\\b|\\bJuan\\ Manuel\\b|\\bJackson\\b|\\bAiden\\b|\\bLiam\\b|\\bLucas\\b|\\bNoah\\b|\\bBenjamín\\b|\\bVicente\\b|\\bMartín\\b|\\bMatías\\b|\\bJoaquín\\b|\\bLuis\\b|\\bAlberto\\b|\\bEdgar\\b|\\bMartin\\b|\\bAlejandro\\b|\\balejandro\\b|\\bDiego\\b|\\bGabriel\\b|\\bSamuel\\b|\\bsantiago\\b|\\bMatias\\b|\\bSebastián\\b|\\bMateo\\b|\\bNicolás\\b|\\bHarry\\b|\\bJack\\b|\\bOliver\\b|\\bCharlie\\b|\\bJames\\b|\\blucas\\b|\\bEnzo\\b|\\bNathan\\b|\\bMathis\\b|\\bLouis\\b|\\bMaximilian\\b|\\bAlexander\\b|\\bPaul\\b|\\bLeon\\b|\\bLukas\\b|\\bDavi\\b|\\bMiguel\\b|\\bArthur\\b|\\bMatheus\\b|\\bNahuel\\b|\\bnahuel\\b|\\bEliseo\\b|\\beliseo\\b|\\bSabino\\b|\\bsabino\\b|\\bBelen\\b|\\bbelen\\b|\\bValentina\\b|\\bvalentina\\b|\\bFlorencia\\b|\\bflorencia\\b|\\bHernan\\b|\\bhernan\\b|\\bGuillermo\\b|\\bguillermo\\b|\\bMarcelo\\b|\\bmarcelo\\b|\\bOscar\\b|\\boscar\\b|\\bFederico\\b|\\bfederico\\b|\\bAnalia\\b|\\banalia\\b|\\bSantiago\\b|\\bElias\\b|\\bCamila\\b|\\bcamila\\b|\\bLudmila\\b|\\bludmila\\b|\\bJuan\\ Cruz\\b|\\bErnesto\\b|\\bAdrian\\b|\\bSabi\\b|\\bValen\\b|\\bVal\\b|\\bNahu\\b|\\bNahue\\b|\\bSanti\\b|\\bEli\\b|\\bFede\\b|\\bBelu\\b|\\bBel\\b|\\bKate\\b|\\bCate\\b|\\bAdri\\b)"
+  },
+  {
+    "name": "dia",
+    "pattern": "(\\bLunes\\b|\\blunes\\b|\\bLUNES\\b|\\bMartes\\b|\\bmartes\\b|\\bMARTES\\b|\\bMiercoles\\b|\\bmiercoles\\b|\\bMIERCOLES\\b|\\bJueves\\b|\\bjueves\\b|\\bJUEVES\\b|\\bViernes\\b|\\bviernes\\b|\\bVIERNES\\b|\\bSabado\\b|\\bsabado\\b|\\bSABADO\\b|\\bDomingo\\b|\\bdomingo\\b|\\bDOMINGO\\b)"
+  }
+]

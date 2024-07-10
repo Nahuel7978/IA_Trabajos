@@ -1,0 +1,115 @@
+version: "3.1"
+
+intents:
+  - saludo
+  - despedida
+  - afirmacion
+  - negacion
+  - satisfactorio
+  - insatisfactorio
+  - bien
+  - cortante
+  - enojo
+  - triste
+  - preguntas_casete
+  - contactos
+  - soy_profesor
+  - soy_alumno
+  - reunion
+  - horario
+  - materias_cursadas
+  - consejo
+  - ayuda
+  - buscar_informacion
+  - como_estas
+  - choque
+  - murio
+  - fallo
+
+entities:
+  - nombre
+  - titulo
+  - dia
+  - hora
+
+slots:
+  name:
+    type: text
+    influence_conversation: true
+    mappings: 
+    - type: from_entity
+      entity: nombre
+      
+  professor: 
+    type: bool
+    influence_conversation: true
+    mappings:
+    - type: from_intent
+      intent: soy_profesor
+      value: true
+    - type: from_intent
+      intent: soy_alumno
+      value: false
+  
+  day:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_entity
+      entity: dia
+
+  hour:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_entity
+      entity: hora
+
+responses:
+  utter_how_can_i_help_you:
+  - text: "Cómo puedo ayudarte?"
+
+  utter_how_are_you:
+  - text: "Bien bien, vos como estas?"
+
+  utter_happy:
+  - text: "me parece perfecto, algo en lo qué pueda ayudarte?"
+
+  utter_goodbye:
+  - text: "bueno, nos vemoss..."
+
+  utter_contacts:
+  - text: "Fijate que en el link que te paso estan todos los contactos de exa. Link: https://exa.unicen.edu.ar/contacto/#1612959726852-f4568468-b132"
+  
+  utter_continuation_meet:
+  - text: "terminemos de coordinar la reunion y seguimos"
+  
+  utter_i_dont_understand:
+  - text: "Perdon, no entendí que quisiste decir..."
+
+  utter_tell_me:
+  - text: "por favor, contame por qué..."
+
+  utter_angry:
+  - text: "Perdon hay algo que te dije qué te haya molestado? Te noto un poco molesto. Si estas molesto por algo en especial estoy dispuesto a escuchar..."
+  
+  utter_sympathy:
+  - text: "Noo que cagada che, lo bueno es que estas bien. Cualquier cosa que necesites avisame."
+
+  utter_compassion:
+  - text: "Realmente no sé qué decir, pero lamento mucho tu pérdida. Lo siento, esto es algo que no puedo solucionar por ti, pero aquí estoy para ti"
+
+  utter_support:
+  - text: "Tranquilo. Haber fallado en esto no significa que seas un fracaso, solo es otro pequeño obstáculo"
+
+actions:
+  - meet
+  - person
+  - subject
+  - search
+  - coordinate
+  - help_you
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

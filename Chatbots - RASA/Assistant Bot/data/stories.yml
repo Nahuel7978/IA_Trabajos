@@ -1,0 +1,119 @@
+version: "3.1"
+
+stories:
+
+- story: inic_conversation
+  steps:
+    - intent: saludo
+    - action: person
+
+- story: i_am_proffesor
+  steps:
+    - intent: soy_profesor
+    - action: person
+
+- story: i_am_classmate
+  steps:
+    - intent: soy_alumno
+    - action: person
+
+# ///// Preguntas Simples
+
+- story: know_who_are_you
+  steps:
+    - intent: preguntas_casete
+    - action: person
+
+- story: contact
+  steps:
+  - intent: contactos
+  - action: utter_contacts
+
+- story: subjects
+  steps:
+    - intent: materias_cursadas
+    - action: subject
+
+- story: tips
+  steps:
+    - intent: consejo
+    - action: person
+
+# /////////Inteligencia Emocional
+
+- story: how_are_you
+  steps:
+    - intent: como_estas
+    - action: utter_how_are_you
+
+- story: fine
+  steps:
+    - intent: bien
+    - action: utter_happy
+
+- story: sad
+  steps:
+    - intent: triste
+    - action: utter_tell_me
+
+- story: angry
+  steps:
+    - intent: enojo
+    - action: utter_angry
+
+- story: cutting
+  steps:
+    - intent: cortante
+    - action: help_you
+
+- story: crashed
+  steps:
+    - intent: choque
+    - action: utter_sympathy
+
+- story: dead
+  steps:
+    - intent: murio
+    - action: utter_compassion
+
+- story: failed
+  steps:
+    - intent: fallo
+    - action: utter_support
+
+- story: thank
+  steps:
+    - intent: satisfactorio
+    - action: help_you
+
+- story: no_thank
+  steps:
+    - intent: insatisfactorio
+    - action: help_you
+
+# /////////REUNIONES
+
+- story: meeting
+  steps:
+  - intent: reunion
+  - action: coordinate
+  - intent: horario
+  - action: meet
+  - or:
+    - intent: afirmacion
+    - intent: negacion
+  - action: meet
+
+# ///////////////
+# ////////////// ayuda
+- story: help
+  steps:
+  - intent: ayuda
+  - action: help_you
+# //// BUSQUEDAS
+- story: search_information
+  steps:
+  - intent: buscar_informacion
+  - action: search
+
+#///////////////

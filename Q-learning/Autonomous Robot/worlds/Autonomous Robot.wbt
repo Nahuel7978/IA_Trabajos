@@ -1,0 +1,59 @@
+#VRML_SIM R2023b utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/Parquetry.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/BrushedAluminium.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/apartment_structure/protos/Wall.proto"
+EXTERNPROTO "../protos/Rosbot.proto"
+EXTERNPROTO "../protos/Elisa3.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  orientation 0.0602736705625792 -0.9711170353001286 -0.2308653035577293 5.757873667732735
+  position -9.050907122611944 -0.5195092053198332 5.860484660507253
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  translation 0.13 0 0
+  floorSize 8 8
+  floorTileSize 16 16
+  floorAppearance Parquetry {
+    type "light strip"
+  }
+  wallHeight 0.3
+  wallAppearance BrushedAluminium {
+    IBLStrength 0
+  }
+}
+Elisa3 {
+  translation 4.0500000000000025 -4.141972620864525e-12 -1.574903674622305e-05
+  rotation 0.99929783677544 -0.03746776502338807 2.796650130629646e-07 3.668040098874551e-07
+  controller "elisa3"
+  extensionSlot [
+    Emitter {
+      translation -0.01 0 0.027
+      name "emitter(1)"
+      rotationStep 0.261799
+      range 100
+      maxRange 100
+      aperture 0
+      channel 1
+      baudRate 9200
+      bufferSize 1
+    }
+  ]
+}
+Rosbot {
+  translation -3.2201214361306705 1.3365408700935385e-07 -0.0005629725964279991
+  rotation -0.0034997322939203913 0.9998974859553146 0.01388414398198619 3.2542732556333324e-05
+  controller "rosbot"
+}
+Wall {
+  size 0.1 6 0.5
+}
