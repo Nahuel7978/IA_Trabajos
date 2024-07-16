@@ -856,7 +856,7 @@ Robot {
     Emitter {
       name "Emitter"
       channel 1
-      range 100.0
+      range 5.0
       aperture 0  # 90 grados en radianes
       baudRate 9600
     }

@@ -3,7 +3,12 @@
 # You may need to import some classes of the controller module. Ex:
 #  from controller import Robot, Motor, DistanceSensor
 from controller import Robot, Motor, Receiver
-from QLearning.HROSbot import * 
+from Movimientos.HROSbot import * 
+from Movimientos.HROSbotComportamental import * 
+import numpy as np
+import math
+import time
+import struct
 
 # create the Robot instance.
 robot = Robot()
@@ -11,12 +16,14 @@ robot = Robot()
 timestep = int(robot.getBasicTimeStep())
 receiver = robot.getDevice('Receiver')
 receiver.enable(32)
+print(receiver.getQueueLength())
 
-rosbot = HROSbot(robot)
+rosbot = HROSbotComportamental(robot)
 
-
+rosbot.avanzar(0.01,0.1,0.3)
+if(rosbot.ir_estimulo()):
+    print("Funco")
 """
-rosbot.giroDerecha()
 rosbot.avanzar(1,5.0)
 rosbot.avanzar(1,5.0)
 rosbot.avanzar(1,5.0)
@@ -27,23 +34,47 @@ rosbot.avanzar(1,5.0)
 
 """
 
-
-
+#c = 299792458  
+"""
 # Main loop:
 # - perform simulation steps until Webots is stopping the controller
 while robot.step(timestep) != -1:
+    print("Queue: ",receiver.getQueueLength())
     if receiver.getQueueLength() > 0:
-        message = receiver.getString()
-        # Procesar la señal para determinar la dirección
-        print(f"Received signal: {message}")
-        print("Fuerza: ",receiver.getSignalStrength())
-        print("Direccion: ", receiver.getEmitterDirection())
+        message = receiver.getFloats()
         
-        receiver.nextPacket()
+        tiempo_emision = message[0]
+           
+        tiempo_recepcion = time.time()
+        
+        dif=tiempo_recepcion-tiempo_emision
+        
+        distancia = (c * dif)/2
+        
+        direccion = receiver.getEmitterDirection()
+        
+        fuerza = receiver.getSignalStrength() # 1/r^2
+        
+        distancia = math.sqrt(1/fuerza)
+        
+        print(f"Received signal: {tiempo_emision}")
+        print("Tiempo de de recepcion: ", tiempo_recepcion)
+        print("Tiempo que tardo: ", dif)
+        print("Distancia: ", distancia)
+        print("Fuerza: ",fuerza)
+        print(f"Direccion: x =  {direccion[0]} ; y= {direccion[1]} ; z = {direccion[2]} ")
+        print("angulo: ",math.atan2(direccion[1], direccion[0]))
+
+        while(receiver.getQueueLength() > 0):
+            receiver.nextPacket()
     else:
         print("NAti")
     
-    rosbot.avanzar(1,5.0)
+    fin = rosbot.avanzar(1,5.0,0.3)
+    if(not fin):
+        print("El recorrido NO termino")
+    else:
+        print("El recorrido Termino")
     # Read the sensors:
     # Enter here functions to read sensor data, like:
     #  val = ds.getValue()
@@ -55,3 +86,4 @@ while robot.step(timestep) != -1:
   #  pass
 
 # Enter here exit cleanup code.
+"""

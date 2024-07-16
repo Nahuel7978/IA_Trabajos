@@ -21,10 +21,10 @@
 #include <webots/motor.h>
 #include <webots/robot.h>
 #include <webots/emitter.h>
+#include <time.h>
 
 #define TIME_STEP 64
 #define RANGE (127 / 2)
-#define message "aquí"
 
 
 int main(int argc, char *argv[]) {
@@ -36,13 +36,19 @@ int main(int argc, char *argv[]) {
   wb_robot_init();
 
   /* get and enable devices */
+/*
   init_devices();
 
   /* get a handler to the motors and set target position to infinity (speed control). */
   emitter = wb_robot_get_device("Emitter");
+  
+  double message;
+  struct timespec ts;
 
   while(wb_robot_step(TIME_STEP) != -1){
-    wb_emitter_send(emitter, message, strlen(message) + 1);
+    clock_gettime(CLOCK_REALTIME, &ts);
+    message = ts.tv_sec + ts.tv_nsec / 1e9;
+    wb_emitter_send(emitter, &message, sizeof(message));
   }
 
   return 0;
