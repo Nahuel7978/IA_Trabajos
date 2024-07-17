@@ -49,6 +49,9 @@ class HROSbot:
         self.anteriorValorPositionSensor = [0,0,0,0]
         self.DefaultPositionSensorAnterior()
         self.limiteSensor = 2.0
+        #Cuando se acerca de forma no recta a una pared hay que determinar si puede girar a la derecha o izquierda.
+        self.toleranciaEntreSensores = 0.09 
+        #
         self.radioRueda = 0.0425
         self.encoderUnit = (2*np.pi*self.radioRueda)/6.28 
         #
@@ -103,6 +106,7 @@ class HROSbot:
         self.ruedaIzquierdaSuperior.setVelocity(0)
         self.anteriorValorPositionSensor[0] = self.frontLeftPositionSensor.getValue()
         self.anteriorValorPositionSensor[1] = self.frontRightPositionSensor.getValue()
+        
 
         if((dist[0]>=distancia) or (dist[1]>=distancia)):
             return True
@@ -141,14 +145,21 @@ class HROSbot:
         velocidad = 2.0
         ang_z = 0
 
-        while ((self.robot.step(self.robotTimestep) != -1)and(ang_z>(angulo))):
-            gyroZ =self.giroscopio.getValues()[2]
-            ang_z=ang_z+(gyroZ*self.robotTimestep*0.001)
-           
-            self.ruedaDerechaSuperior.setVelocity(0.0)
-            self.ruedaDerechaInferior.setVelocity(0.0)
-            self.ruedaIzquierdaInferior.setVelocity(velocidad)
-            self.ruedaIzquierdaSuperior.setVelocity(velocidad)
+        self.robot.step(self.robotTimestep)
+        fls =self.frontLeftSensor.getValue() 
+        frs = self.frontRightSensor.getValue()
+
+        if(((fls<=frs+self.toleranciaEntreSensores))or
+           ((fls==self.limiteSensor)and(frs==self.limiteSensor))):
+            
+            while ((self.robot.step(self.robotTimestep) != -1)and(ang_z>(angulo))):
+                gyroZ =self.giroscopio.getValues()[2]
+                ang_z=ang_z+(gyroZ*self.robotTimestep*0.001)
+            
+                self.ruedaDerechaSuperior.setVelocity(0.0)
+                self.ruedaDerechaInferior.setVelocity(0.0)
+                self.ruedaIzquierdaInferior.setVelocity(velocidad)
+                self.ruedaIzquierdaSuperior.setVelocity(velocidad)
             
         self.ruedaDerechaSuperior.setVelocity(0)
         self.ruedaDerechaInferior.setVelocity(0)
@@ -161,14 +172,21 @@ class HROSbot:
         velocidad = 2.0
         ang_z = 0
 
-        while ((self.robot.step(self.robotTimestep) != -1)and(ang_z<(angulo))): #0.5*np.pi
-            gyroZ =self.giroscopio.getValues()[2]
-            ang_z=ang_z+(gyroZ*self.robotTimestep*0.001)
-           
-            self.ruedaDerechaSuperior.setVelocity(velocidad)
-            self.ruedaDerechaInferior.setVelocity(velocidad)
-            self.ruedaIzquierdaInferior.setVelocity(0.0)
-            self.ruedaIzquierdaSuperior.setVelocity(0.0)
+        self.robot.step(self.robotTimestep)
+        fls =self.frontLeftSensor.getValue() 
+        frs = self.frontRightSensor.getValue()
+
+        if(((frs<=fls+self.toleranciaEntreSensores))or
+           ((fls==self.limiteSensor)and(frs==self.limiteSensor))):
+
+            while ((self.robot.step(self.robotTimestep) != -1)and(ang_z<(angulo))): #0.5*np.pi
+                gyroZ =self.giroscopio.getValues()[2]
+                ang_z=ang_z+(gyroZ*self.robotTimestep*0.001)
+            
+                self.ruedaDerechaSuperior.setVelocity(velocidad)
+                self.ruedaDerechaInferior.setVelocity(velocidad)
+                self.ruedaIzquierdaInferior.setVelocity(0.0)
+                self.ruedaIzquierdaSuperior.setVelocity(0.0)
             
         self.ruedaDerechaSuperior.setVelocity(0)
         self.ruedaDerechaInferior.setVelocity(0)

@@ -20,9 +20,18 @@ print(receiver.getQueueLength())
 
 rosbot = HROSbotComportamental(robot)
 
-rosbot.avanzar(0.01,0.1,0.3)
-if(rosbot.ir_estimulo()):
-    print("Funco")
+rosbot.avanzar(0.01,5,0.3)
+
+llegue = False
+
+while(robot.step(timestep) != -1)and(not llegue):
+    if(receiver.getQueueLength() > 0):
+        print("Ir Estimulo")
+        llegue= rosbot.ir_estimulo()
+    else:
+        print("Explorar")
+        rosbot.explorar()
+
 """
 rosbot.avanzar(1,5.0)
 rosbot.avanzar(1,5.0)
