@@ -8,75 +8,107 @@ class HROSbotComportamental(HROSbot):
 
     def __init__(self, bot):
         super().__init__(bot)
+        self.bot = bot
         self.exploracion = False
         self.anguloAnterior = 0.5
-        self.maximoGiroDerecha = 0.5
-        self.maximoGiroIzquierda = 0.5
-
+        self.maximoGiroDerecha = 0.25
+        self.maximoGiroIzquierda = 0.25
 
     def ir_estimulo(self):
         self.robot.step(self.robotTimestep)
-        print("Ir_estimulo: ", self.receiver.getQueueLength() )
+        #print("Ir_estimulo. #Señales ", self.receiver.getQueueLength() )
         estimuloEncontrado = False
-        velocidad = 5.0
-        metrosColision = 0.3
+        velocidad = self.speed
+        metrosColision = self.minDistancia
         tolerancia = 0.1
 
-        if(self.receiver.getQueueLength() > 0):
-            print("HAY SEÑAL")
+        if (not self.hayObstaculo() and self.haySeñal()):
             direccion = self.receiver.getEmitterDirection() #1: x; 2: y; 3:z;
-
-            if(direccion[0]<1):
-                angulo=math.atan2(direccion[1], direccion[0])
+            if (direccion[0]<1):
+                angulo = math.atan2(direccion[1], direccion[0])
                 if(direccion[1]>0):
                     self.giroIzquierda(angulo)
                 else:
                     self.giroDerecha(angulo)
-
                 self.actualizarOrientación(angulo)
-                
             distancia = math.sqrt(1/self.receiver.getSignalStrength())
+            #print("   - HAY SEÑAL. Dirección ",print(direccion),"; Distancia: ",distancia)
 
-            print("Distancia: ",distancia)
+            #print("Distancia: ",distancia)
             finaliza = self.avanzar(distancia,velocidad,metrosColision)
             self.vaciarCola()
-            
             self.robot.step(self.robotTimestep)
 
-            if(finaliza):
+            if (finaliza):
                 estimuloEncontrado = True
             else:
                 if(self.receiver.getQueueLength() > 0):
-                    print("Queue: ", self.receiver.getQueueLength())
+                    #print("Queue: ", self.receiver.getQueueLength())
                     distancia = math.sqrt(1/self.receiver.getSignalStrength())
-                    print("Segunda distancia: ",distancia)
+                    #print("Segunda distancia: ",distancia)
                     if(distancia<=(metrosColision+tolerancia)):
                         estimuloEncontrado = True
 
         return estimuloEncontrado
 
+
     def evitarObstaculo(self):
+        #print("Evitar Obstáculo")
+        self.robot.step(self.robotTimestep)
+        velocidad = self.speed
+        min = self.minDistancia
+        flsv = self.frontLeftSensor.getValue()  # Front Left Sensor Value
+        frsv = self.frontRightSensor.getValue() # Front Right Sensor Value       
+        while (self.hayObstaculo()): # Hay un obstáculo en el camino
+            # Clara decisión de giro: ángulo de giro menor a un lado determinado
+            if (flsv < 0.1 or frsv < 0.1):
+                self.retroceder(0.05,velocidad)
+            if (abs(flsv - frsv) > self.toleranciaEntreSensores):
+                angulo = 0.1
+                if (frsv > flsv):   # Giro a la derecha
+                    self.giroDerecha(-angulo*np.pi)
+                    self.retroceder(0.2,velocidad)
+                    self.giroDerecha(-angulo*np.pi)
+                else:
+                    self.giroIzquierda(angulo*np.pi)
+                    self.retroceder(0.2,velocidad)
+                    self.giroIzquierda(angulo*np.pi)
+            # Decisión de giro ambigüa: ángulo de giro mayor a un lado aleatorio
+            else:
+                #print("DECISION DE GIRO AMBIGUA")
+                angulo = 0.25
+                giro = np.random.uniform()
+                if (giro <= 1/3):
+                    self.giroIzquierda(angulo*np.pi)
+                    self.retroceder(0.2,velocidad)
+                    self.giroIzquierda(angulo*np.pi)
+                elif (giro <= 2/3):
+                    self.giroDerecha(-angulo*np.pi)
+                    self.retroceder(0.2,velocidad)
+                    self.giroDerecha(-angulo*np.pi)
+            self.avanzar(0.2,self.speed,min) 
+            flsv = self.frontLeftSensor.getValue()
+            frsv = self.frontRightSensor.getValue()
+
         
         return None 
 
     def explorar(self):
         self.robot.step(self.robotTimestep)
-        velocidad = 5
+        velocidad = self.speed
         distancia = 2
-        metrosColision = 0.3
+        metrosColision = self.minDistancia
 
-        if(self.receiver.getQueueLength() <= 0):
-            self.exploracion=True
+        if not self.haySeñal():
+            self.exploracion = True
             giro = np.random.uniform()
-            if(giro<=0.5):
+            if (giro <= 0.5):
                 angulo = np.random.uniform(low=0, high=self.maximoGiroIzquierda)
                 self.giroIzquierda(angulo*np.pi)
-
                 self.actualizarOrientación(angulo)
             else:
                 angulo = -1*np.random.uniform(low=0, high=self.maximoGiroDerecha)
                 self.giroDerecha(angulo*np.pi)
-
                 self.actualizarOrientación(angulo)
 
             self.avanzar(distancia,velocidad,metrosColision)    
@@ -93,9 +125,9 @@ class HROSbotComportamental(HROSbot):
             self.maximoGiroDerecha = 0.5
             self.maximoGiroIzquierda = 0.5
 
-        print("Angulo Ant: ", self.anguloAnterior)
-        print("Maximo Izq: ", self.maximoGiroIzquierda)
-        print("Maximo Der: ", self.maximoGiroDerecha)
-        print("Angulo Giro: ", angulo)
+        #print("Angulo Ant: ", self.anguloAnterior)
+        #print("Maximo Izq: ", self.maximoGiroIzquierda)
+        #print("Maximo Der: ", self.maximoGiroDerecha)
+        #print("Angulo Giro: ", angulo)
         
                 
