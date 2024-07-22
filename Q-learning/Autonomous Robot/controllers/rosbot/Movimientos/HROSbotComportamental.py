@@ -7,13 +7,10 @@ class HROSbotComportamental(HROSbot):
 
     def __init__(self, bot):
         super().__init__(bot)
-<<<<<<< Updated upstream
-=======
         self.exploracion = False
         self.anguloAnterior = 0.5
         self.maximoGiroDerecha = 0.5
         self.maximoGiroIzquierda = 0.5
->>>>>>> Stashed changes
 
     def ir_estimulo(self):
         self.robot.step(self.robotTimestep)
@@ -32,13 +29,9 @@ class HROSbotComportamental(HROSbot):
                 else:
                     self.giroDerecha(math.atan2(direccion[1], direccion[0]))
 
-<<<<<<< Updated upstream
-            distancia = math.sqrt(1/self.receiver.getSignalStrength())
-=======
                 self.actualizarOrientación(angulo)
                 
             distancia = self.distanciaSeñal()
->>>>>>> Stashed changes
 
             finaliza = self.avanzar(distancia,velocidad)
             self.vaciarCola()
@@ -53,14 +46,6 @@ class HROSbotComportamental(HROSbot):
         return None 
 
     def explorar(self):
-<<<<<<< Updated upstream
-
-
-        return None
-            
-        
-                
-=======
         print("-->Explorar")
         self.robot.step(self.robotTimestep)
         velocidad = 5
@@ -108,4 +93,3 @@ class HROSbotComportamental(HROSbot):
             self.maximoGiroIzquierda = 0.5
 
     
->>>>>>> Stashed changes

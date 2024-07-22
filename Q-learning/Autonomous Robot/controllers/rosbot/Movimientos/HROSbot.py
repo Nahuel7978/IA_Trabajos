@@ -52,13 +52,10 @@ class HROSbot:
         self.anteriorValorPositionSensor = [0,0]
         self.DefaultPositionSensorAnterior()
         self.limiteSensor = 2.0
-<<<<<<< Updated upstream
-=======
 
         #Cuando se acerca de forma no recta a una pared hay que determinar si puede girar a la derecha o izquierda.
         self.toleranciaEntreSensores = 0.09 
         #
->>>>>>> Stashed changes
         self.radioRueda = 0.0425
         self.encoderUnit = (2*np.pi*self.radioRueda)/6.28 
         #
@@ -148,16 +145,6 @@ class HROSbot:
         ang_z = 0
         giro = False
 
-<<<<<<< Updated upstream
-        while ((self.robot.step(self.robotTimestep) != -1)and(ang_z>(angulo))):
-            gyroZ =self.giroscopio.getValues()[2]
-            ang_z=ang_z+(gyroZ*self.robotTimestep*0.001)
-           
-            self.ruedaDerechaSuperior.setVelocity(0.0)
-            self.ruedaDerechaInferior.setVelocity(0.0)
-            self.ruedaIzquierdaInferior.setVelocity(velocidad)
-            self.ruedaIzquierdaSuperior.setVelocity(velocidad)
-=======
         self.robot.step(self.robotTimestep)
         fls =self.frontLeftSensor.getValue() 
         frs = self.frontRightSensor.getValue()
@@ -175,7 +162,6 @@ class HROSbot:
                 self.ruedaDerechaInferior.setVelocity(0.0)
                 self.ruedaIzquierdaInferior.setVelocity(velocidad)
                 self.ruedaIzquierdaSuperior.setVelocity(velocidad)
->>>>>>> Stashed changes
             
         self.ruedaDerechaSuperior.setVelocity(0)
         self.ruedaDerechaInferior.setVelocity(0)
@@ -190,16 +176,6 @@ class HROSbot:
         ang_z = 0
         giro = False
 
-<<<<<<< Updated upstream
-        while ((self.robot.step(self.robotTimestep) != -1)and(ang_z<(angulo))): #0.5*np.pi
-            gyroZ =self.giroscopio.getValues()[2]
-            ang_z=ang_z+(gyroZ*self.robotTimestep*0.001)
-           
-            self.ruedaDerechaSuperior.setVelocity(velocidad)
-            self.ruedaDerechaInferior.setVelocity(velocidad)
-            self.ruedaIzquierdaInferior.setVelocity(0.0)
-            self.ruedaIzquierdaSuperior.setVelocity(0.0)
-=======
         self.robot.step(self.robotTimestep)
         fls =self.frontLeftSensor.getValue() 
         frs = self.frontRightSensor.getValue()
@@ -217,7 +193,6 @@ class HROSbot:
                 self.ruedaDerechaInferior.setVelocity(velocidad)
                 self.ruedaIzquierdaInferior.setVelocity(0.0)
                 self.ruedaIzquierdaSuperior.setVelocity(0.0)
->>>>>>> Stashed changes
             
         self.ruedaDerechaSuperior.setVelocity(0)
         self.ruedaDerechaInferior.setVelocity(0)
