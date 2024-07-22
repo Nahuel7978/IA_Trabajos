@@ -8,7 +8,6 @@ class HROSbotComportamental(HROSbot):
 
     def __init__(self, bot):
         super().__init__(bot)
-        self.bot = bot
         self.exploracion = False
         self.anguloAnterior = 0.5
         self.maximoGiroDerecha = 0.25
@@ -21,35 +20,26 @@ class HROSbotComportamental(HROSbot):
         velocidad = self.speed
         metrosColision = self.minDistancia
         tolerancia = 0.1
+        finaliza = False
 
         if (not self.hayObstaculo() and self.haySeñal()):
             direccion = self.receiver.getEmitterDirection() #1: x; 2: y; 3:z;
             if (direccion[0]<1):
-                angulo = math.atan2(direccion[1], direccion[0])
                 if(direccion[1]>0):
-                    self.giroIzquierda(angulo)
+                    self.giroIzquierda(math.atan2(direccion[1], direccion[0]))
                 else:
-                    self.giroDerecha(angulo)
-                self.actualizarOrientación(angulo)
-            distancia = math.sqrt(1/self.receiver.getSignalStrength())
-            #print("   - HAY SEÑAL. Dirección ",print(direccion),"; Distancia: ",distancia)
+                    self.giroDerecha(math.atan2(direccion[1], direccion[0]))
 
-            #print("Distancia: ",distancia)
-            finaliza = self.avanzar(distancia,velocidad,metrosColision)
+                self.actualizarOrientación(math.atan2(direccion[1], direccion[0]))
+                
+            distancia = self.distanciaSeñal()
+
+            finaliza = self.avanzar(distancia,velocidad)
             self.vaciarCola()
             self.robot.step(self.robotTimestep)
 
-            if (finaliza):
-                estimuloEncontrado = True
-            else:
-                if(self.receiver.getQueueLength() > 0):
-                    #print("Queue: ", self.receiver.getQueueLength())
-                    distancia = math.sqrt(1/self.receiver.getSignalStrength())
-                    #print("Segunda distancia: ",distancia)
-                    if(distancia<=(metrosColision+tolerancia)):
-                        estimuloEncontrado = True
+        return finaliza
 
-        return estimuloEncontrado
 
 
     def evitarObstaculo(self):
@@ -125,9 +115,4 @@ class HROSbotComportamental(HROSbot):
             self.maximoGiroDerecha = 0.5
             self.maximoGiroIzquierda = 0.5
 
-        #print("Angulo Ant: ", self.anguloAnterior)
-        #print("Maximo Izq: ", self.maximoGiroIzquierda)
-        #print("Maximo Der: ", self.maximoGiroDerecha)
-        #print("Angulo Giro: ", angulo)
-        
-                
+    

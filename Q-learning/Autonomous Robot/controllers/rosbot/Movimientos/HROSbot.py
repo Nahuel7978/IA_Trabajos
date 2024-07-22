@@ -1,3 +1,4 @@
+import math
 from controller import Robot, Camera, Motor, Receiver
 import numpy as np
 
@@ -47,7 +48,9 @@ class HROSbot:
         self.rearLeftPositionSensor.enable(self.TIMESTEP)
         self.rearRightPositionSensor.enable(self.TIMESTEP)
         #
-        self.anteriorValorPositionSensor = [0,0,0,0]
+        self.metrosColision = 0.3
+        #
+        self.anteriorValorPositionSensor = [0,0]
         self.DefaultPositionSensorAnterior()
         self.limiteSensor = 2.0
         # Detección de obstáculos
@@ -99,8 +102,8 @@ class HROSbot:
         return distancia;
 
 
-    def avanzar(self, distancia, velocidad, metrosColision):
-        #print("Avanzar")
+    def avanzar(self, distancia, velocidad):
+        print("Avanzar")
         dist = [0, 0]
         dist[0] = 0
         dist[1] = 0
@@ -109,24 +112,14 @@ class HROSbot:
         fls =self.frontLeftSensor.getValue() 
         frs = self.frontRightSensor.getValue()
 
-        velocidad_actual = 0
-        aceleracion = 2  # Ajusta este valor según sea necesario para una aceleración más suave
-        max_velocidad = self.speed
-
-        while ((fls>metrosColision and frs>metrosColision)and
+        while ((fls>self.metrosColision and frs>self.metrosColision)and
                (dist[0]<distancia or dist[1]<distancia)and
                (self.robot.step(self.robotTimestep) != -1)):
             dist =  self.metrosRecorridos()
-
-            if velocidad_actual < max_velocidad:
-                velocidad_actual = min(velocidad_actual + aceleracion, max_velocidad)
-            else:
-                velocidad_actual = velocidad
-
-            self.ruedaDerechaSuperior.setVelocity(velocidad_actual)
-            self.ruedaDerechaInferior.setVelocity(velocidad_actual)
-            self.ruedaIzquierdaInferior.setVelocity(velocidad_actual)
-            self.ruedaIzquierdaSuperior.setVelocity(velocidad_actual)
+            self.ruedaDerechaSuperior.setVelocity(velocidad)
+            self.ruedaDerechaInferior.setVelocity(velocidad)
+            self.ruedaIzquierdaInferior.setVelocity(velocidad)
+            self.ruedaIzquierdaSuperior.setVelocity(velocidad)
             fls =self.frontLeftSensor.getValue() 
             frs = self.frontRightSensor.getValue()
             
@@ -174,6 +167,7 @@ class HROSbot:
         #print("Derecha")
         velocidad = 2.0
         ang_z = 0
+        giro = False
 
         self.robot.step(self.robotTimestep)
         fls =self.frontLeftSensor.getValue() 
@@ -182,7 +176,9 @@ class HROSbot:
         if(((fls<=frs+self.toleranciaEntreSensores))or
            ((fls==self.limiteSensor)and(frs==self.limiteSensor))):
             
-            while ((self.robot.step(self.robotTimestep) != -1) and (not self.hayObstaculo()) and (ang_z>(angulo))):
+            giro = True
+
+            while ((self.robot.step(self.robotTimestep) != -1)and(ang_z>(angulo))):
                 gyroZ =self.giroscopio.getValues()[2]
                 ang_z=ang_z+(gyroZ*self.robotTimestep*0.001)
             
@@ -196,11 +192,13 @@ class HROSbot:
         self.ruedaIzquierdaInferior.setVelocity(0)
         self.ruedaIzquierdaSuperior.setVelocity(0)
 
+        return giro
 
     def giroIzquierda(self, angulo):
         #print("izquierda")
         velocidad = 2.0
         ang_z = 0
+        giro = False
 
         self.robot.step(self.robotTimestep)
         fls =self.frontLeftSensor.getValue() 
@@ -208,8 +206,10 @@ class HROSbot:
 
         if(((frs<=fls+self.toleranciaEntreSensores))or
            ((fls==self.limiteSensor)and(frs==self.limiteSensor))):
+            
+            giro = True
 
-            while ((self.robot.step(self.robotTimestep) != -1) and (not self.hayObstaculo()) and(ang_z<(angulo))): #0.5*np.pi
+            while ((self.robot.step(self.robotTimestep) != -1)and(ang_z<(angulo))): #0.5*np.pi
                 gyroZ =self.giroscopio.getValues()[2]
                 ang_z=ang_z+(gyroZ*self.robotTimestep*0.001)
             
@@ -223,6 +223,101 @@ class HROSbot:
         self.ruedaIzquierdaInferior.setVelocity(0)
         self.ruedaIzquierdaSuperior.setVelocity(0)
 
+        return giro
+
     def vaciarCola(self):
         while(self.receiver.getQueueLength() > 0):
             self.receiver.nextPacket()
+    
+    #Sensores de colision
+    def get_frontLeftSensor(self):
+        return self.frontLeftSensor.getValue()
+
+    def get_frontRightSensor(self):
+        return self.frontRightSensor.getValue()
+    #
+    def get_rearLeftSensor(self):
+        return self.rearLeftSensor.getValue()
+
+    def get_rearRightSensor(self):
+        return self.rearRightSensor.getValue()
+    
+    # Sensores de posicion
+    def get_frontLeftPositionSensor(self):
+        return self.frontLeftPositionSensor.getValue()
+    
+    def get_frontRightPositionSensor(self):
+        return self.frontRightPositionSensor.getValue()
+    #
+    def get_rearLeftPositionSensor(self):
+        return self.rearLeftPositionSensor.getValue()
+
+    def get_rearRightPositionSensor(self):
+        return self.rearRightPositionSensor.getValue()
+    
+    # Limite de sensores de colision
+    def get_limiteSensor(self):
+        return self.limiteSensor
+    
+    #Metros de colision
+    def get_metrosColision(self):
+        return self.metrosColision
+
+    def set_metrosColision(self, value):
+        self.metrosColision = value
+    
+    #Valor anterior de sensor de posicion
+    def get_anteriorValorPositionSensor(self):
+        return self.anteriorValorPositionSensor
+
+    def DefaultPositionSensorAnterior(self):
+        for i in range(1) :
+            self.anteriorValorPositionSensor[i]=0
+
+    #Receiver            
+    def get_receiver(self):
+        return self.receiver.getQueueLength()
+    
+    def getSignalStrength(self):
+        return self.receiver.getSignalStrength()
+    
+    def getEmitterDirection(self):
+        return self.receiver.getEmitterDirection()
+    
+    def distanciaSeñal(self):
+        return math.sqrt(1/self.getSignalStrength())
+    
+    def estimuloEncontrado(self, tolerancia):
+        encontrado = False
+        if(self.get_receiver() > 0):
+            if(self.distanciaSeñal()<=(self.metrosColision+tolerancia)):
+                encontrado = True
+        
+        return encontrado
+    #
+""""
+
+    ###
+    
+    def get_robotTimestep(self):
+        return self.robotTimestep
+
+    def set_robotTimestep(self, value):
+        self.robotTimestep = value
+
+    def get_TIMESTEP(self):
+        return self.TIMESTEP
+
+    def set_TIMESTEP(self, value):
+        self.TIMESTEP = value
+
+    def get_giroscopio(self):
+        return self.giroscopio.getValues()
+
+    def get_acelerometro(self):
+        return self.acelerometro
+
+    
+
+
+"""

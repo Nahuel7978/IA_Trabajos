@@ -2,15 +2,20 @@
 
 # You may need to import some classes of the controller module. Ex:
 #  from controller import Robot, Motor, DistanceSensor
-from controller import Robot, Motor, Receiver
+from controller import Robot, Motor, Receiver, Supervisor
 from Movimientos.HROSbot import * 
 from Movimientos.HROSbotComportamental import * 
+from Movimientos.HROSbotInteligente import * 
+from Movimientos.EntornoEntrenamiento import * 
+from Movimientos.SupervisorClass import * 
 import numpy as np
 import math
 import time
 import struct
 
+
 # create the Robot instance.
+
 robot = Robot()
 # get the time step of the current world. 
 timestep = int(robot.getBasicTimeStep()) # timestep = 32 
