@@ -19,13 +19,6 @@ import struct
 robot = Robot()
 timestep =  int(robot.getBasicTimeStep())
 
-<<<<<<< Updated upstream
-rosbot = HROSbotComportamental(robot)
-
-rosbot.avanzar(0.01,0.1,0.3)
-if(rosbot.ir_estimulo()):
-    print("Funco")
-=======
 rosbot = HROSbotInteligente(robot,0.1,0.7,0.1)
 #pInicial, recompensaMaxima, recompensaMinima, valorPaso, penalizacion, epocas, pasos
 entorno = EntornoEntrenamiento(10,5,-1,-5,10,20)
@@ -49,7 +42,6 @@ while(robot.step(timestep) != -1)and(not llegue):
         
 #☺    entorno.puntoInicial(uActual,rActual)
 
->>>>>>> Stashed changes
 """
 """
 rosbot.avanzar(1,5.0)
