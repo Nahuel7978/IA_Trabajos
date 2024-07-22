@@ -29,7 +29,7 @@ class HROSbotComportamental(HROSbot):
                 else:
                     self.giroDerecha(math.atan2(direccion[1], direccion[0]))
 
-                self.actualizarOrientación(angulo)
+                self.actualizarOrientación(math.atan2(direccion[1], direccion[0]))
                 
             distancia = self.distanciaSeñal()
 
