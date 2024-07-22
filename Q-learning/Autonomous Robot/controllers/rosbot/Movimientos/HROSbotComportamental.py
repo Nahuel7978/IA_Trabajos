@@ -15,7 +15,7 @@ class HROSbotComportamental(HROSbot):
 
     def ir_estimulo(self):
         self.robot.step(self.robotTimestep)
-        #print("Ir_estimulo. #Señales ", self.receiver.getQueueLength() )
+        print("--> Ir_estimulo. #Señales ", self.receiver.getQueueLength() )
         velocidad = self.speed
         finaliza = False
 
@@ -40,7 +40,7 @@ class HROSbotComportamental(HROSbot):
 
 
     def evitarObstaculo(self):
-        #print("Evitar Obstáculo")
+        print("--> Evitar Obstáculo")
         self.robot.step(self.robotTimestep)
         velocidad = self.speed
         min = self.minDistancia
@@ -73,7 +73,7 @@ class HROSbotComportamental(HROSbot):
                     self.giroDerecha(-angulo*np.pi)
                     self.retroceder(0.2,velocidad)
                     self.giroDerecha(-angulo*np.pi)
-            self.avanzar(0.2,self.speed,min) 
+            self.avanzar(0.2,self.speed) 
             flsv = self.frontLeftSensor.getValue()
             frsv = self.frontRightSensor.getValue()
 
@@ -81,6 +81,7 @@ class HROSbotComportamental(HROSbot):
         return None 
 
     def explorar(self):
+        print("--> Expplorar")
         self.robot.step(self.robotTimestep)
         velocidad = self.speed
         distancia = 2

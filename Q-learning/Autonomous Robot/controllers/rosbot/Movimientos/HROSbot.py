@@ -288,7 +288,7 @@ class HROSbot:
     def estimuloEncontrado(self, tolerancia):
         encontrado = False
         if(self.get_receiver() > 0):
-            if(self.distanciaSeñal()<=(self.metrosColision+tolerancia)):
+            if(self.distanciaSeñal()<=(self.minDistancia+tolerancia)):
                 encontrado = True
         
         return encontrado

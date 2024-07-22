@@ -31,12 +31,12 @@ class HROSbotInteligente(HROSbotComportamental):
                 indice = 0
             else:   #Hay señal
                 indice = 1
-        elif((frs<=self.metrosColision)and(fls<=self.metrosColision)): #Hay obstaculo
+        elif((frs<=self.minDistancia)and(fls<=self.minDistancia)): #Hay obstaculo
             if((Queque<=0)): #No hay señal
                 indice = 2
             else:   #Hay señal
                 indice = 3
-        elif((frs>self.metrosColision)and(fls>self.metrosColision)): #Obstaculo lejos
+        elif((frs>self.minDistancia)and(fls>self.minDistancia)): #Obstaculo lejos
             if((Queque<=0)): #No hay señal
                 indice = 4
             else:   #Hay señal

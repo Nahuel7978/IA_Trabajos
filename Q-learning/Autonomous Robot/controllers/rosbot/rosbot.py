@@ -25,11 +25,15 @@ receiver = robot.getDevice('Receiver')
 receiver.enable(timestep)
 #print(receiver.getQueueLength())
 
-rosbot = HROSbotComportamental(robot)
-#rosbot.avanzar(0.01,5,rosbot.minDistancia)
+rosbot = HROSbotInteligente(robot,0.1,0.7,0.1)
+#pInicial, recompensaMaxima, recompensaMinima, valorPaso, penalizacion, epocas, pasos
+entorno = EntornoEntrenamiento(10,5,-1,-5,10,20)
 
 llegue = False
 
+
+entorno.entrenamiento(rosbot)
+"""
 step_counter = 0
 while(robot.step(timestep)!=-1) and (not llegue):
 
@@ -46,7 +50,7 @@ while(robot.step(timestep)!=-1) and (not llegue):
         rosbot.explorar()
 
 print("END")
-
+"""
 """
 rosbot.avanzar(1,5.0)
 rosbot.avanzar(1,5.0)
