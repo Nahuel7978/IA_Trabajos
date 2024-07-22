@@ -13,24 +13,34 @@ import struct
 # create the Robot instance.
 robot = Robot()
 # get the time step of the current world. 
-timestep = int(robot.getBasicTimeStep())
+timestep = int(robot.getBasicTimeStep()) # timestep = 32 
+
+
 receiver = robot.getDevice('Receiver')
-receiver.enable(32)
-print(receiver.getQueueLength())
+receiver.enable(timestep)
+#print(receiver.getQueueLength())
 
 rosbot = HROSbotComportamental(robot)
-
-rosbot.avanzar(0.01,5,0.3)
+#rosbot.avanzar(0.01,5,rosbot.minDistancia)
 
 llegue = False
 
-while(robot.step(timestep) != -1)and(not llegue):
-    if(receiver.getQueueLength() > 0):
-        print("Ir Estimulo")
-        llegue= rosbot.ir_estimulo()
+step_counter = 0
+while(robot.step(timestep)!=-1) and (not llegue):
+
+    rosbot.DisplayData(step_counter)
+    step_counter+=1
+    if (rosbot.hayObstaculo()):
+        print("   DECISIÓN: Esquivar obstáculo")
+        rosbot.evitarObstaculo()
+    elif (rosbot.haySeñal()):
+        print("   DECISIÓN: Ir Hacia Estimulo")
+        llegue = rosbot.ir_estimulo()
     else:
-        print("Explorar")
+        print("   DECISIÓN: Explorar")
         rosbot.explorar()
+
+print("END")
 
 """
 rosbot.avanzar(1,5.0)
