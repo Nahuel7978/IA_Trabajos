@@ -48,8 +48,6 @@ class HROSbot:
         self.rearLeftPositionSensor.enable(self.TIMESTEP)
         self.rearRightPositionSensor.enable(self.TIMESTEP)
         #
-        self.metrosColision = 0.3
-        #
         self.anteriorValorPositionSensor = [0,0]
         self.DefaultPositionSensorAnterior()
         self.limiteSensor = 2.0
@@ -112,7 +110,7 @@ class HROSbot:
         fls =self.frontLeftSensor.getValue() 
         frs = self.frontRightSensor.getValue()
 
-        while ((fls>self.metrosColision and frs>self.metrosColision)and
+        while ((fls>self.minDistancia and frs>self.minDistancia)and
                (dist[0]<distancia or dist[1]<distancia)and
                (self.robot.step(self.robotTimestep) != -1)):
             dist =  self.metrosRecorridos()
@@ -261,10 +259,10 @@ class HROSbot:
     
     #Metros de colision
     def get_metrosColision(self):
-        return self.metrosColision
+        return self.minDistancia
 
     def set_metrosColision(self, value):
-        self.metrosColision = value
+        self.minDistancia = value
     
     #Valor anterior de sensor de posicion
     def get_anteriorValorPositionSensor(self):

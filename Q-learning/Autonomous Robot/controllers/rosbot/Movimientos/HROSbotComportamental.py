@@ -16,10 +16,7 @@ class HROSbotComportamental(HROSbot):
     def ir_estimulo(self):
         self.robot.step(self.robotTimestep)
         #print("Ir_estimulo. #Señales ", self.receiver.getQueueLength() )
-        estimuloEncontrado = False
         velocidad = self.speed
-        metrosColision = self.minDistancia
-        tolerancia = 0.1
         finaliza = False
 
         if (not self.hayObstaculo() and self.haySeñal()):
@@ -87,7 +84,6 @@ class HROSbotComportamental(HROSbot):
         self.robot.step(self.robotTimestep)
         velocidad = self.speed
         distancia = 2
-        metrosColision = self.minDistancia
 
         if not self.haySeñal():
             self.exploracion = True
@@ -101,7 +97,7 @@ class HROSbotComportamental(HROSbot):
                 self.giroDerecha(angulo*np.pi)
                 self.actualizarOrientación(angulo)
 
-            self.avanzar(distancia,velocidad,metrosColision)    
+            self.avanzar(distancia,velocidad)    
             self.exploracion=False
 
     def actualizarOrientación(self, angulo):
