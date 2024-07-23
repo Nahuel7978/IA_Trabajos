@@ -20,18 +20,22 @@ class EntornoEntrenamiento():
         self.translation = self.robot_node.getField("translation")
         self.rotation = self.robot_node.getField("rotation")
 
+        self.toleranciaMovimiento = 1
+
+
     def determinarRecompensa(self, robot,antValPos):
         
-        actValPosDer = robot.get_frontRightPositionSensor()
-        actValPosIzq = robot.get_frontLeftPositionSensor()
+        actValPosDer = round(robot.get_frontRightPositionSensor(), 1)
+        actValPosIzq = round(robot.get_frontLeftPositionSensor(), 1)
         senal = robot.get_receiver()
         recompensa =  0
-        movimiento = True
+        movimiento = False
 
-        print(antValPos[0],"==",actValPosIzq," and ",antValPos[1],"==",actValPosDer )
-        if((antValPos[0]==actValPosIzq) and(antValPos[1]==actValPosDer)):
+        print(antValPos[0]+self.toleranciaMovimiento,">",actValPosIzq," and ",antValPos[1]+self.toleranciaMovimiento,">",actValPosDer )
+        if((antValPos[0]+self.toleranciaMovimiento>actValPosIzq) and(antValPos[1]+self.toleranciaMovimiento>actValPosDer)):
              recompensa = self.penalizacionMaxima
-             movimiento=False
+        else:
+            movimiento=True
 
         if(senal>0):
             tolerancia = 0.1 
@@ -57,8 +61,8 @@ class EntornoEntrenamiento():
             estSig = robot.estadoActual()
             siguienteAccion = robot.siguienteAccion(estSig)
             antValPos= [0,0]
-            actValPosDer = robot.get_frontRightPositionSensor()
-            actValPosIzq = robot.get_frontLeftPositionSensor() 
+            actValPosDer = round(robot.get_frontRightPositionSensor(),1)
+            actValPosIzq = round(robot.get_frontLeftPositionSensor(), 1) 
             robot.vaciarCola()
             
             while((not objAlcanzado)and(j<=self.pasos)):
@@ -83,8 +87,8 @@ class EntornoEntrenamiento():
                 
                 robot.actualizarPoliticas(estAct,accion,estSig,siguienteAccion,recompensa)
 
-                actValPosDer = robot.get_frontRightPositionSensor()
-                actValPosIzq = robot.get_frontLeftPositionSensor() 
+                actValPosDer = round(robot.get_frontRightPositionSensor(), 1)
+                actValPosIzq = round(robot.get_frontLeftPositionSensor(), 1)
 
                 
                 j += 1
@@ -108,9 +112,9 @@ class EntornoEntrenamiento():
         self.translation.setSFVec3f(posicionInicial)
         self.rotation.setSFRotation(rotacionInicial)
         self.supervisor.simulationResetPhysics()
-
     
+    def get_toleranciaMovimiento(self):
+        return self.toleranciaMovimiento
 
-
-
-        
+    def set_toleranciaMovimiento(self, value):
+        self.toleranciaMovimiento = value

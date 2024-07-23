@@ -29,10 +29,25 @@ rosbot = HROSbotInteligente(robot,0.1,0.7,0.1)
 #pInicial, recompensaMaxima, recompensaMinima, valorPaso, penalizacion, epocas, pasos
 entorno = EntornoEntrenamiento(10,5,-1,-5,10,20)
 
+rosbotComp = HROSbotComportamental(robot)
 llegue = False
 
 
 entorno.entrenamiento(rosbot)
+#rosbotComp.avanzar(0.1,2)
+#rosbotComp.ir_estimulo()
+"""
+while(robot.step(timestep) != -1)and(not llegue):
+    if(rosbotComp.get_receiver() > 0):
+        print("Ir Estimulo")
+        rosbotComp.ir_estimulo()
+        llegue =  rosbotComp.estimuloEncontrado(0.1)
+    else:
+        print("Explorar")
+        rosbotComp.explorar()
+        
+#☺    entorno.puntoInicial(uActual,rActual)
+"""
 """
 step_counter = 0
 while(robot.step(timestep)!=-1) and (not llegue):

@@ -15,11 +15,11 @@ class HROSbotComportamental(HROSbot):
 
     def ir_estimulo(self):
         self.robot.step(self.robotTimestep)
-        print("--> Ir_estimulo. #Señales ", self.receiver.getQueueLength() )
+        print("--> Ir_estimulo.  ", self.receiver.getQueueLength() )
         velocidad = self.speed
         finaliza = False
 
-        if (not self.hayObstaculo() and self.haySeñal()):
+        if (self.haySeñal()):
             direccion = self.receiver.getEmitterDirection() #1: x; 2: y; 3:z;
             if (direccion[0]<1):
                 if(direccion[1]>0):
@@ -76,9 +76,9 @@ class HROSbotComportamental(HROSbot):
             self.avanzar(0.2,self.speed) 
             flsv = self.frontLeftSensor.getValue()
             frsv = self.frontRightSensor.getValue()
-
-        
-        return None 
+        self.actualizarOrientación(0.0)
+        self.vaciarCola()
+        self.robot.step(self.robotTimestep)
 
     def explorar(self):
         print("--> Expplorar")
@@ -86,20 +86,39 @@ class HROSbotComportamental(HROSbot):
         velocidad = self.speed
         distancia = 2
 
-        if not self.haySeñal():
+        if (not self.haySeñal()):
             self.exploracion = True
-            giro = np.random.uniform()
-            if (giro <= 0.5):
-                angulo = np.random.uniform(low=0, high=self.maximoGiroIzquierda)
-                self.giroIzquierda(angulo*np.pi)
-                self.actualizarOrientación(angulo)
-            else:
-                angulo = -1*np.random.uniform(low=0, high=self.maximoGiroDerecha)
-                self.giroDerecha(angulo*np.pi)
-                self.actualizarOrientación(angulo)
+            probMov = np.random.uniform()
 
-            self.avanzar(distancia,velocidad)    
+            if((probMov<=0.30) or (self.hayObstaculo())):
+                probGiro = np.random.uniform()
+                giro = False
+                i = 0
+                while((not giro)and(i<=1)):
+                    i +=1
+                    if(probGiro<=0.5):
+                        angulo = np.random.uniform(low=0, high=self.maximoGiroIzquierda)
+                        giro = self.giroIzquierda(angulo*np.pi)
+                        if(giro):
+                            self.actualizarOrientación(angulo)
+                        else:
+                            probGiro = 0.9
+                    else:
+                        angulo = -1*np.random.uniform(low=0, high=self.maximoGiroDerecha)
+                        giro = self.giroDerecha(angulo*np.pi)
+                        
+                        if(giro):
+                            self.actualizarOrientación(angulo)
+                        else:
+                            probGiro = 0.1
+                if(giro):
+                    self.avanzar(distancia,velocidad)    
+            else:
+                self.avanzar(distancia,velocidad)
+
             self.exploracion=False
+            self.vaciarCola()
+            self.robot.step(self.robotTimestep)
 
     def actualizarOrientación(self, angulo):
         if(self.exploracion):
@@ -109,7 +128,7 @@ class HROSbotComportamental(HROSbot):
             self.anguloAnterior=anguloActual
         else:
             self.anguloAnterior = 0.5
-            self.maximoGiroDerecha = 0.5
-            self.maximoGiroIzquierda = 0.5
+            self.maximoGiroDerecha = 0.25
+            self.maximoGiroIzquierda = 0.25
 
     
