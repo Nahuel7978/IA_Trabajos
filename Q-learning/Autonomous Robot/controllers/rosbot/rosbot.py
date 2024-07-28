@@ -27,12 +27,17 @@ llegue = False
 
 step_counter = 0
 while(robot.step(timestep)!=-1) and (not llegue):
-
+    print(receiver.getSignalStrength())
     rosbot.DisplayData(step_counter)
     step_counter+=1
-    if (rosbot.hayObstaculo()):
+    obstaculo = rosbot.getObstaculoAlFrente()
+    print("Intensidad de la señal",rosbot.receiver.getSignalStrength())
+    if (rosbot.arrivedDestination()):
+        print("   FIN DEL RECORRIDO: Objetivo alcanzado.")
+        llegue = True
+    elif (obstaculo != None):
         print("   DECISIÓN: Esquivar obstáculo")
-        rosbot.evitarObstaculo()
+        rosbot.evitarObstaculo(obstaculo)
     elif (rosbot.haySeñal()):
         print("   DECISIÓN: Ir Hacia Estimulo")
         llegue = rosbot.ir_estimulo()
@@ -40,6 +45,7 @@ while(robot.step(timestep)!=-1) and (not llegue):
         print("   DECISIÓN: Explorar")
         rosbot.explorar()
 
+print(llegue)
 print("END")
 
 """

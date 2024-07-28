@@ -2,7 +2,7 @@ from controller import Robot, Camera, Motor, Receiver
 import numpy as np
 
 class HROSbot: 
-
+    
     def __init__(self, bot):
         self.robot = bot
         self.robotTimestep = int(self.robot.getBasicTimeStep())
@@ -22,10 +22,12 @@ class HROSbot:
         self.giroscopio = self.robot.getDevice("imu gyro")
         self.acelerometro = self.robot.getDevice("imu accelerometer")
         self.lidar = self.robot.getDevice("laser")
+        self.receiver = self.robot.getDevice("Receiver")
         #
         self.giroscopio.enable(self.robotTimestep)
         self.acelerometro.enable(self.robotTimestep)
         self.lidar.enable(self.robotTimestep)
+        self.receiver.enable(self.robotTimestep)
         #
         self.frontLeftSensor = self.robot.getDevice("fl_range")
         self.frontRightSensor = self.robot.getDevice("fr_range")
@@ -52,7 +54,12 @@ class HROSbot:
         self.limiteSensor = 2.0
         # Detección de obstáculos
         self.minDistancia = 0.3
-        self.toleranciaEntreSensores = 0.05 
+        self.toleranciaEntreSensores = 0.05
+        self.epsilon = 0.01
+        self.error_range = 3
+        self.front_range = 25
+        self.goal_index = 100
+        self.minSignal = 0.5
         #
         self.radioRueda = 0.0425
         self.encoderUnit = (2*np.pi*self.radioRueda)/6.28 
@@ -61,23 +68,63 @@ class HROSbot:
         #
         self.receiver.enable(32)
  
+    #
+
     def DisplayData(self,step):
         print("STEP #",step)
-        print("   Acelerómetro: ", self.acelerometro.getValues())
-        print("   Giroscopio:   ", self.giroscopio.getValues())
-        print("   Sensores infrarrojos de distancia:")
-        print("       L: ",self.frontLeftSensor.getValue(),"; R: ",self.frontRightSensor.getValue())
-        print("   Hay Obstáculo: ",(self.frontLeftSensor.getValue() < self.minDistancia or self.frontRightSensor.getValue() < self.minDistancia))
-        print("   Hay Señal:    ", self.haySeñal())
-    
+        print("   Acelerómetro:  ", self.acelerometro.getValues())
+        print("   Giroscopio:    ", self.giroscopio.getValues())
+        print("   Hay Obstáculo: ",self.getObstaculoAlFrente())
+        print("   Hay Señal:     ", self.haySeñal())
+        print("                   INT: ",self.receiver.getSignalStrength())
+
+    # 
+
+    def arrivedDestination(self):
+        minSignalStrength = self.minSignal
+        actualSignalStrength = self.receiver.getSignalStrength()
+        print(actualSignalStrength)
+        return actualSignalStrength >= minSignalStrength
+
     def haySeñal(self):
         return self.receiver.getQueueLength() > 0
     
-    def hayObstaculo(self):
-        min = self.minDistancia
-        flsv = self.frontLeftSensor.getValue()  # Front Left Sensor Value
-        frsv = self.frontRightSensor.getValue() # Front Right Sensor Value
-        return (flsv <= min) or (frsv <= min)
+##### Detección de obstáculos
+
+    # Evita la repetición de código
+    def getObstaculo(self,lidar_slice,extra=0):
+        min = self.minDistancia + extra
+        min_index = None
+        for index in range(len(lidar_slice)):
+            if lidar_slice[index] <= min:
+                min = lidar_slice[index]
+                min_index = index
+        return min_index
+
+    def getObstaculoAlFrente(self,extra=0):
+        lidar_data = self.lidar.getRangeImage()
+        fr = self.front_range # 50
+        lidar_front = lidar_data[:fr] + lidar_data[-fr:]        # mitad primera: r, mitad izq: l
+        obstaculo = self.getObstaculo(lidar_front, extra)                   # Retorna None o el número de index
+        if obstaculo != None:
+            if obstaculo < fr:
+                lado = "right"
+            else:
+                lado = "left"
+            return [obstaculo % self.front_range,lado]
+        return None
+
+    def getObstaculoADerecha(self,lidar_data):
+        er = self.error_range
+        lidar_right = lidar_data[self.right_goal_index - er : self.right_goal_index + er]
+        return self.getObstaculo(lidar_right,0.2)
+
+    def getObstaculoAIzquierda(self,lidar_data):
+        er = self.error_range
+        lidar_left = lidar_data[self.left_goal_index - er : self.left_goal_index + er]
+        return self.getObstaculo(lidar_left,0.2)
+    
+####
 
     def DefaultPositionSensorAnterior(self):
         for i in range(3) :
@@ -95,25 +142,34 @@ class HROSbot:
             distancia[i] = ps_values[i]*self.encoderUnit
 
         #print("metros recorridos: {} {}".format(distancia[0], distancia[1]))
-
         return distancia;
 
+<<<<<<< Updated upstream
 
     def avanzar(self, distancia, velocidad, metrosColision):
         #print("Avanzar")
+=======
+    def avanzar(self, distancia):
+        print("Avanzar")
+>>>>>>> Stashed changes
         dist = [0, 0]
         dist[0] = 0
         dist[1] = 0
-
+        velocidad = self.speed
         self.robot.step(self.robotTimestep)
         fls =self.frontLeftSensor.getValue() 
         frs = self.frontRightSensor.getValue()
+<<<<<<< Updated upstream
 
         velocidad_actual = 0
         aceleracion = 2  # Ajusta este valor según sea necesario para una aceleración más suave
         max_velocidad = self.speed
 
         while ((fls>metrosColision and frs>metrosColision)and
+=======
+        # while cierta condicion se cumpla
+        while ((not self.getObstaculoAlFrente())and
+>>>>>>> Stashed changes
                (dist[0]<distancia or dist[1]<distancia)and
                (self.robot.step(self.robotTimestep) != -1)):
             dist =  self.metrosRecorridos()
@@ -137,7 +193,6 @@ class HROSbot:
         self.anteriorValorPositionSensor[0] = self.frontLeftPositionSensor.getValue()
         self.anteriorValorPositionSensor[1] = self.frontRightPositionSensor.getValue()
         
-
         if((dist[0]>=distancia) or (dist[1]>=distancia)):
             return True
         else:
@@ -171,17 +226,23 @@ class HROSbot:
     
 
     def giroDerecha(self, angulo):
-        #print("Derecha")
+        print("Derecha")
         velocidad = 2.0
         ang_z = 0
+<<<<<<< Updated upstream
+=======
+        giro = True
+>>>>>>> Stashed changes
 
         self.robot.step(self.robotTimestep)
+        """
         fls =self.frontLeftSensor.getValue() 
         frs = self.frontRightSensor.getValue()
 
         if(((fls<=frs+self.toleranciaEntreSensores))or
            ((fls==self.limiteSensor)and(frs==self.limiteSensor))):
             
+<<<<<<< Updated upstream
             while ((self.robot.step(self.robotTimestep) != -1) and (not self.hayObstaculo()) and (ang_z>(angulo))):
                 gyroZ =self.giroscopio.getValues()[2]
                 ang_z=ang_z+(gyroZ*self.robotTimestep*0.001)
@@ -190,6 +251,18 @@ class HROSbot:
                 self.ruedaDerechaInferior.setVelocity(0.0)
                 self.ruedaIzquierdaInferior.setVelocity(velocidad)
                 self.ruedaIzquierdaSuperior.setVelocity(velocidad)
+=======
+            giro = True
+        """
+        while ((self.robot.step(self.robotTimestep) != -1)and(ang_z>(angulo))):
+            gyroZ =self.giroscopio.getValues()[2]
+            ang_z=ang_z+(gyroZ*self.robotTimestep*0.001)
+        
+            self.ruedaDerechaSuperior.setVelocity(0.0)
+            self.ruedaDerechaInferior.setVelocity(0.0)
+            self.ruedaIzquierdaInferior.setVelocity(velocidad)
+            self.ruedaIzquierdaSuperior.setVelocity(velocidad)
+>>>>>>> Stashed changes
             
         self.ruedaDerechaSuperior.setVelocity(0)
         self.ruedaDerechaInferior.setVelocity(0)
@@ -198,16 +271,22 @@ class HROSbot:
 
 
     def giroIzquierda(self, angulo):
-        #print("izquierda")
+        print("izquierda")
         velocidad = 2.0
         ang_z = 0
+<<<<<<< Updated upstream
+=======
+        giro = True
+>>>>>>> Stashed changes
 
         self.robot.step(self.robotTimestep)
+        """
         fls =self.frontLeftSensor.getValue() 
         frs = self.frontRightSensor.getValue()
 
         if(((frs<=fls+self.toleranciaEntreSensores))or
            ((fls==self.limiteSensor)and(frs==self.limiteSensor))):
+<<<<<<< Updated upstream
 
             while ((self.robot.step(self.robotTimestep) != -1) and (not self.hayObstaculo()) and(ang_z<(angulo))): #0.5*np.pi
                 gyroZ =self.giroscopio.getValues()[2]
@@ -217,6 +296,19 @@ class HROSbot:
                 self.ruedaDerechaInferior.setVelocity(velocidad)
                 self.ruedaIzquierdaInferior.setVelocity(0.0)
                 self.ruedaIzquierdaSuperior.setVelocity(0.0)
+=======
+            
+            giro = True
+        """
+        while ((self.robot.step(self.robotTimestep) != -1)and(ang_z<(angulo))): #0.5*np.pi
+            gyroZ =self.giroscopio.getValues()[2]
+            ang_z=ang_z+(gyroZ*self.robotTimestep*0.001)
+        
+            self.ruedaDerechaSuperior.setVelocity(velocidad)
+            self.ruedaDerechaInferior.setVelocity(velocidad)
+            self.ruedaIzquierdaInferior.setVelocity(0.0)
+            self.ruedaIzquierdaSuperior.setVelocity(0.0)
+>>>>>>> Stashed changes
             
         self.ruedaDerechaSuperior.setVelocity(0)
         self.ruedaDerechaInferior.setVelocity(0)
