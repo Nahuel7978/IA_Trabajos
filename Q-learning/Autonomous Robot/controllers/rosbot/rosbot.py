@@ -16,7 +16,6 @@ robot = Robot()
 # get the time step of the current world. 
 timestep = int(robot.getBasicTimeStep()) # timestep = 32 
 
-#pInicial, recompensaMaxima, recompensaMinima, valorPaso, penalizacion, epocas, pasos
 rosbot = HROSbotInteligente(robot,0.1,0.7,0.2)
 
 entorno = EntornoEntrenamiento(5,2,1,-5,10,20)
@@ -59,9 +58,4 @@ while(robot.step(timestep) != -1)and(not llegue):
     else:
         print("Explorar")
         rosbotComp.explorarDos()
-
-    senial=rosbotComp.get_ultimaSeñal()
-    if(senial!=None):
-        print("--> Val Señal: ",senial[0],",",senial[1])
 """
-#    entorno.puntoInicial(uActual,rActual)
