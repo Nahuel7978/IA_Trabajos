@@ -14,8 +14,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.4522460051516963 -0.2000844598532694 0.8691603763112749 3.8758106285045084
-  position 3.8408698910502066 3.3612702052772243 6.60000105677721
+  orientation 0.005740174651892657 -0.9999549607852208 -0.007558227040319167 4.983592742809819
+  position -4.615344807115206 1.392583628927738 16.61910881313662
 }
 TexturedBackground {
 }
@@ -37,6 +37,11 @@ WoodenBox {
   translation 3.76 1.76 0.3
 }
 WoodenBox {
+  translation 3.76 0 0
+  name "wooden box(3)"
+  size 0.1 0.1 0.32
+}
+WoodenBox {
   translation 3.76 1.76 0.9
   rotation 0 0 1 -0.261795307179586
   name "wooden box(1)"
@@ -50,7 +55,7 @@ WoodenBox {
 Elisa3 {
   hidden position_0_0 2.9620479693485073e-12
   hidden position_0_1 2.8230149052606875e-12
-  translation 4.0499999640608575 -1.0181722129537724e-10 -1.251216378351551e-05
+  translation 3.75585 -4.76214e-08 0.159958
   rotation 1.0072714343655955e-05 -0.9999999999491493 4.918237551869494e-07 0.0365905511509917
   controller "elisa3"
   extensionSlot [
@@ -68,16 +73,8 @@ Elisa3 {
   ]
 }
 DEF principal_robot Rosbot {
-  hidden position_0_0 3.914495363056617e-08
-  hidden position_0_1 3.919042552442932e-08
-  hidden position_0_2 3.8383886159234086e-08
-  hidden position_0_3 3.842938423710503e-08
-  hidden rotation_2 0 1 0 4.2146848510894035e-08
-  hidden rotation_3 0 0.9999999999999999 0 4.2146848510894035e-08
-  hidden rotation_4 0 0.9999999999999999 0 4.2146848510894035e-08
-  hidden rotation_5 0 1 0 4.2146848510894035e-08
-  translation -3.46065 -0.121744 -0.000562395
-  rotation -1.1419104154300261e-05 0.001344673027737069 0.9999990958616175 0.023640260133662223
+  translation -2.97958 1.04798 0
+  rotation 0 0 -1 2.10734e-07
   controller "rosbot"
   controllerArgs [
     ""

@@ -1,5 +1,6 @@
 import numpy as np
-from Movimientos.HROSbotInteligente import *
+import matplotlib.pyplot as plt
+from Inteligente.HROSbotInteligente import *
 from controller import Supervisor
 
 class EntornoEntrenamiento():
@@ -22,8 +23,9 @@ class EntornoEntrenamiento():
 
         self.toleranciaMovimiento = 1
 
+        self.registroEntrenamiento = []
 
-    def determinarRecompensa(self, robot,antValPos):
+    def determinarRecompensa(self, robot,antValPos, antDistSenial):
         
         actValPosDer = round(robot.get_frontRightPositionSensor(), 1)
         actValPosIzq = round(robot.get_frontLeftPositionSensor(), 1)
@@ -31,18 +33,22 @@ class EntornoEntrenamiento():
         recompensa =  0
         movimiento = False
 
-        print(antValPos[0]+self.toleranciaMovimiento,">",actValPosIzq," and ",antValPos[1]+self.toleranciaMovimiento,">",actValPosDer )
-        if((antValPos[0]+self.toleranciaMovimiento>actValPosIzq) and(antValPos[1]+self.toleranciaMovimiento>actValPosDer)):
+        if((antValPos[0]+self.toleranciaMovimiento>actValPosIzq) and
+           (antValPos[1]+self.toleranciaMovimiento>actValPosDer)):
              recompensa = self.penalizacionMaxima
         else:
             movimiento=True
 
         if(senal>0):
-            tolerancia = 0.1 
+            tolerancia = 0.3 
             if(robot.estimuloEncontrado(tolerancia)):
                 recompensa = self.recompensaMaxima
             elif(movimiento):
-                recompensa = self.recompensaMinima
+                actDistSenial = robot.distanciaSeñal()
+                if((antDistSenial==None)or(antDistSenial>actDistSenial)):
+                    recompensa = self.recompensaMinima
+                else:
+                    recompensa = self.penalizacionMinima        
         
         elif(movimiento):
             recompensa = self.penalizacionMinima
@@ -51,11 +57,15 @@ class EntornoEntrenamiento():
         return recompensa
 
     def entrenamiento(self, robot):
+        puntos_partida = []
+        rotacion_partida = []
+        puntos_partida.append(self.ubicacionActual())
+        rotacion_partida.append(self.rotacionActual())
 
-        uInicial = self.ubicacionActual()
-        rInicial = self.rotacionActual()
+        puntoPartida = 0
         
         for i in range(self.epocas):
+            print("|----------------------Epoca ",i,"----------------------------------|")
             objAlcanzado=False
             j = 0
             estSig = robot.estadoActual()
@@ -63,12 +73,22 @@ class EntornoEntrenamiento():
             antValPos= [0,0]
             actValPosDer = round(robot.get_frontRightPositionSensor(),1)
             actValPosIzq = round(robot.get_frontLeftPositionSensor(), 1) 
-            robot.vaciarCola()
             
+            antDistSenial = None
+            if(robot.haySeñal()):
+                actDistSenial = robot.distanciaSeñal()
+            else:
+                actDistSenial = None
+
+            robot.vaciarCola()
+            robot.resetUltimaSeñal()
+
             while((not objAlcanzado)and(j<=self.pasos)):
                 print("----------------------Paso ",j,"----------------------------------")
                 antValPos[0] = actValPosIzq
                 antValPos[1] = actValPosDer
+
+                antDistSenial = actDistSenial
 
                 estAct = estSig
                 accion = siguienteAccion
@@ -83,20 +103,36 @@ class EntornoEntrenamiento():
 
                 print("Estado Siguiente: ", estAct,". Acción: ",siguienteAccion)
 
-                recompensa = self.determinarRecompensa(robot,antValPos)
+                recompensa = self.determinarRecompensa(robot,antValPos,antDistSenial)
                 
                 robot.actualizarPoliticas(estAct,accion,estSig,siguienteAccion,recompensa)
 
                 actValPosDer = round(robot.get_frontRightPositionSensor(), 1)
                 actValPosIzq = round(robot.get_frontLeftPositionSensor(), 1)
 
-                
+                if(robot.haySeñal()):
+                    actDistSenial = robot.distanciaSeñal()
+                else:
+                    actDistSenial = None
+
                 j += 1
                 if(recompensa == self.recompensaMaxima):
                     objAlcanzado = True
 
-            self.puntoInicial(uInicial,rInicial)            
+            if(not objAlcanzado):
+                puntos_partida.append(self.ubicacionActual())
+                rotacion_partida.append(self.rotacionActual())
 
+            if(puntoPartida == 0):
+                self.registroEntrenamiento.append([i,j])
+
+            puntoPartida = self.puntoInicial(puntos_partida,rotacion_partida)
+            robot.resetUltimaSeñal()
+
+        del puntos_partida[1:]
+        del rotacion_partida[1:]
+        self.puntoInicial(puntos_partida,rotacion_partida)
+        robot.guardarPoliticas()
 
 
 
@@ -108,13 +144,28 @@ class EntornoEntrenamiento():
         self.supervisor.step(self.timestep) 
         return self.rotation.getSFRotation()
 
-    def puntoInicial(self,posicionInicial, rotacionInicial):
-        self.translation.setSFVec3f(posicionInicial)
-        self.rotation.setSFRotation(rotacionInicial)
+    def puntoInicial(self,posicionesInicial, rotacionesInicial):
+        index = np.random.randint(0,len(posicionesInicial))
+        self.translation.setSFVec3f(posicionesInicial[index])
+        self.rotation.setSFRotation(rotacionesInicial[index])
         self.supervisor.simulationResetPhysics()
+        return index
     
     def get_toleranciaMovimiento(self):
         return self.toleranciaMovimiento
 
     def set_toleranciaMovimiento(self, value):
         self.toleranciaMovimiento = value
+
+    def visualizarRegistroEntrenamiento(self):
+        epocas = [lista[0] for lista in self.registroEntrenamiento]
+        pasos = [lista[1] for lista in self.registroEntrenamiento]
+
+        plt.figure(figsize=(10, 5))
+        plt.plot(epocas, pasos, marker='o', linestyle='-', color='b')
+        plt.title('Pasos por Época')
+        plt.xlabel('Épocas')
+        plt.ylabel('Pasos')
+        plt.grid(True)
+        plt.show()
+
