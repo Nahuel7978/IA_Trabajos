@@ -135,6 +135,9 @@ class HROSbotComportamental(HROSbot):
                     giro = self.giroDerecha(0.5*np.pi)
                     self.actualizarSeñal()
 
+                if(not giro):
+                    self.evitarObstaculo(obstaculo)
+                    
             elif(gDeterminado==2): #giro a la derecha
                 if (obstaculo[1] == "right"):    
                     retrocedio = self.retroceder(0.1,2.0)

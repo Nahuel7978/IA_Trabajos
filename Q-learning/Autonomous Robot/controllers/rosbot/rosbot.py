@@ -31,31 +31,40 @@ rosbot.visualizarPoliticas()
 #entorno.entrenamiento(rosbot)    
 #entorno.visualizarRegistroEntrenamiento()
 #rosbot.visualizarPoliticas()
-
+#"""
 print("--------------")
 print("MODELO ENTRENADO")
 print("--------------")
 i=1
 while((robot.step(timestep) != -1)and(not llegue)):
-    print("--->Accion",i,"<---")
+    print("--->Comportamiento",i,"<---")
     i+=1
     rosbot.vivir()
     llegue =  rosbot.estimuloEncontrado(0.1)
     print("--------------")
     
 rosbot.displayMapa()
-
-"""#Braitenberg
+#"""
+"""
+#Braitenberg
+print("--------------")
+print("MODELO BRAINTENBERG")
+print("--------------")
+i=1
 while(robot.step(timestep) != -1)and(not llegue):
-    print("------Nuevo Paso----------")
+    print("------Comportamiento ",i,"----------")
+    i+=1
     if(rosbotComp.getObstaculoAlFrente() != None):
         print("Evitar Obstaculo")
         rosbotComp.evitarObstaculoGuiado()
     elif(rosbotComp.get_receiver() > 0):
         print("Ir Estimulo")
         rosbotComp.ir_estimulo()
-        llegue =  rosbotComp.estimuloEncontrado(0.1)
     else:
         print("Explorar")
-        rosbotComp.explorarDos()
+        rosbotComp.explorar()
+        
+    llegue =  rosbotComp.estimuloEncontrado(0.1)
+        
+rosbotComp.displayMapa()
 """
